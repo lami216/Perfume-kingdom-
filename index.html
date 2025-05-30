@@ -127,7 +127,7 @@
     }
 
     /* تعديلات للشاشات الصغيرة (مثل الهواتف في الوضع الطولي) */
-    @media (max-width: 768px) {
+    @ |media (max-width: 768px) {
       .product-grid {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 1rem;
@@ -176,6 +176,15 @@
         font-size: 0.75rem;
       }
     }
+
+    /* أنماط الرموز */
+    .symbols {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 5px;
+      font-size: 1.2rem;
+    }
   </style>
 </head>
 <body>
@@ -223,15 +232,49 @@
       { name: 'Al_Wisam', desc: 'عطر شرقي كلاسيكي بنكهات دافئة - 15000 أوقية', img: 'Al_Wisam.png' }
     ];
 
+    // قاموس الرموز لكل عطر
+    const productSymbols = {
+      'moosouf': '🍁❄️🌙',
+      'jean paul gaultier le male elixir': '🍁❄️🌙',
+      'Dior sauvage': '🌱☂️☀️',
+      'officer': '🌱🍁☀️',
+      'jean_paul_gaultier_paradise': '☂️🌱☀️',
+      'tom_ford_noir': '🍁❄️🌙',
+      '212_VIP_black': '🍁🌙',
+      'Acqua_di_Gio_Armani': '☂️🌱☀️',
+      'La_Nuit_Trésor': '🍁❄️🌙',
+      'MY_WAY': '🌱☂️☀️',
+      'Dolce_and_Gabbana_the_one': '🍁❄️🌙',
+      'You_Intensely': '🍁❄️🌙',
+      'Supremacy_Collectors_Edition': '🍁❄️🌙',
+      'Hawas_Black_Rasasi': '🌱☂️☀️',
+      'Club_de_Nuit_Intense_Man_200ml': '☂️☀️',
+      'Supremacy_Not_Only_Intense': '☂️🌱☀️',
+      'Oud_lavender': '🍁❄️🌙',
+      '9PM_rebel': '🍁🌙',
+      'Liquid_Brun': '🍁❄️🌙',
+      'Odyssey_Spectra': '☂️☀️',
+      'hawas_elixir': '☂️☀️',
+      'Club_De_Nuit_Urban_Elixir': '☂️🌱☀️',
+      '9am_Dive': '☂️🌱☀️',
+      'Turathi_Blue': '☂️☀️',
+      'Hawas_for_Him': '☂️☀️',
+      '9PM': '🍁🌙',
+      'Hawas_Ice_for_Him': '☂️☀️',
+      'Confidential': '🍁❄️🌙',
+      'Al_Wisam': '🍁❄️🌙'
+    };
+
     const productGrid = document.getElementById('product-grid');
 
-    // دالة لعرض المنتجات
+    // دالة لعرض المنتجات مع الرموز
     function displayProducts(filteredProducts = products) {
       productGrid.innerHTML = ''; // إفراغ الشبكة
       filteredProducts.forEach((product, index) => {
         const html = `
           <div class="product">
             <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
+            <div class="symbols">${productSymbols[product.name] || ''}</div>
             <h3>${product.name.replace(/_/g, ' ')}</h3>
             <p>${product.desc}</p>
             <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, 'كامل', ${index})">اطلب الآن</button>
