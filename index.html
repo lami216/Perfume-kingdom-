@@ -22,14 +22,12 @@
       scroll-behavior: smooth;
     }
     header {
-      background:就在: linear-gradient(to right, #d4af37, #b8860b);
+      background: linear-gradient(to right, #d4af37, #b8860b);
       color: white;
       padding: 2rem;
       text-align: center;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       width: 100%;
-      position: sticky;
-      top: 0;
       z-index: 1000;
     }
     header h1 {
@@ -48,7 +46,7 @@
     }
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1.5rem;
       margin-top: 2rem;
     }
@@ -59,7 +57,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       text-align: center;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-      aspect-ratio: 1 / 1; /* جعل المنتج مربعًا */
+      aspect-ratio: 1 / 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -70,14 +68,14 @@
     }
     .product img {
       width: 100%;
-      height: 200px;
+      height: 150px;
       object-fit: cover;
       border-radius: 8px;
       display: block;
-      aspect-ratio: 1 / 1; /* جعل الصورة مربعة */
+      aspect-ratio: 1 / 1;
     }
     .product h3 {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       margin: 0.5rem 0;
       color: #2c2c2c;
     }
@@ -91,12 +89,12 @@
       background: linear-gradient(to right, #d4af37, #b8860b);
       color: white;
       border: none;
-      padding: 0.75rem 1.5rem;
+      padding: 0.75rem 1rem;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 0.9rem;
       transition: background 0.3s ease;
-      margin-top: auto; /* دفع الزر للأسفل */
+      margin-top: auto;
     }
     .product button:hover {
       background: linear-gradient(to right, #b8860b, #d4af37);
@@ -151,10 +149,10 @@
     }
     @media (max-width: 768px) {
       .product-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       }
       .product img {
-        height: 150px;
+        height: 120px;
       }
       header h1 {
         font-size: 2rem;
@@ -165,10 +163,10 @@
     }
     @media (max-width: 480px) {
       .product-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       }
       .product img {
-        height: 200px;
+        height: 120px;
       }
     }
   </style>
@@ -230,7 +228,7 @@
       { name: 'Supremacy Not Only Intense', price: '29000 أوقية', img: 'Supremacy_Not_Only_Intense.png' },
       { name: 'Oud Lavender', price: '26000 أوقية', img: 'Oud_Lavender.png' },
       { name: '9PM Rebel', price: '25000 أوقية', img: '9PM_Rebel.png' },
-      { name: 'Liquid Brun', price: '23000 أوقية', img: 'Liquid_Brun.png' },
+      { name: 'Liquid Brun',D price: '23000 أوقية', img: 'Liquid_Brun.png' },
       { name: 'Odyssey Spectra', price: '21000 أوقية', img: 'Odyssey_Spectra.png' },
       { name: 'Club de Nuit Intense Man', price: '20000 أوقية', img: 'Club_de_Nuit_Intense_Man.png' },
       { name: 'Hawas Elixir', price: '20000 أوقية', img: 'Hawas_Elixir.png' },
@@ -249,7 +247,7 @@
     products.forEach((product) => {
       const html = `
         <div class="product">
-          <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
+          <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/200?text=عطر'">
           <h3>${product.name}</h3>
           <div class="price">${product.price}</div>
           <button onclick="order('${encodeURIComponent(product.name)}')">اطلب الآن</button>
