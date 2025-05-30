@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -6,7 +7,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: 'Cairo', sans-serif;
       background: linear-gradient(135deg, #f5e4c3, #fff5e6);
@@ -14,32 +19,37 @@
       direction: rtl;
       line-height: 1.6;
       overflow-x: hidden;
+      scroll-behavior: smooth;
     }
     header {
       background: linear-gradient(to right, #d4af37, #b8860b);
       color: white;
-      padding: 2rem;
+      padding: 3rem 1rem;
       text-align: center;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
     header h1 {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       margin: 0;
       text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
     }
     header p {
-      font-size: 1.1rem;
-      margin-top: 0.5rem;
+      font-size: 1.2rem;
+      margin-top: 0.75rem;
     }
     .container {
-      max-width: 1200px;
+      max-width: 1280px;
       margin: auto;
-      padding: 2rem;
+      padding: 2rem 1rem;
     }
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
       margin-top: 2rem;
     }
     .product {
@@ -48,27 +58,33 @@
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .product:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     }
     .product img {
-      max-width: 100%;
+      width: 100%;
       height: 250px;
       object-fit: cover;
       border-radius: 8px;
+      display: block;
     }
     .product h3 {
-      font-size: 1.4rem;
-      margin: 0.5rem 0;
+      font-size: 1.3rem;
+      margin: 0.75rem 0;
       color: #2c2c2c;
     }
     .product p {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: #666;
       margin-bottom: 1rem;
     }
     .product .price {
       font-size: 1.1rem;
       color: #b8860b;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
       font-weight: bold;
     }
     .product button {
@@ -79,6 +95,7 @@
       border-radius: 6px;
       cursor: pointer;
       font-size: 1rem;
+      transition: background 0.3s ease;
     }
     .product button:hover {
       background: linear-gradient(to right, #b8860b, #d4af37);
@@ -108,7 +125,7 @@
       background: #222;
       color: #ccc;
       text-align: center;
-      padding: 1.5rem;
+      padding: 2rem;
       margin-top: 3rem;
     }
     .social {
@@ -125,11 +142,27 @@
       text-align: center;
       line-height: 45px;
       font-size: 20px;
-      transition: background 0.3s ease;
+      transition: background 0.3s ease, transform 0.3s ease;
     }
     .social a:hover {
       background: #d4af37;
-      color: white;
+      transform: scale(1.1);
+    }
+    @media (max-width: 768px) {
+      .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+      header h1 {
+        font-size: 2rem;
+      }
+      header p {
+        font-size: 1rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -174,52 +207,53 @@
   </footer>
   <script>
     const products = [
-      { name: 'Jean_Paul_Gaultier_Le_Male_Elixir', price: '100000 أوقية', img: 'Jean_Paul_Gaultier_Le_Male_Elixir.png' },
-      { name: 'Dior_sauvage_200ml', price: '100000 أوقية', img: 'Dior_sauvage_200ml.png' },
-      { name: 'Jean_Paul_Gaultier_Paradise', price: '76200 أوقية', img: 'Jean_Paul_Gaultier_Paradise.png' },
-      { name: 'Tom_Ford_Noir', price: '72000 أوقية', img: 'Tom_Ford_Noir.png' },
-      { name: '212_VIP_Black', price: '61000 أوقية', img: '212_VIP_Black.png' },
-      { name: 'Acqua_di_Gio_Armani', price: '61000 أوقية', img: 'Acqua_di_Gio_Armani.png' },
-      { name: 'La_Nuit_Trésor', price: '58000 أوقية', img: 'La_Nuit_Trésor.png' },
-      { name: 'MY_WAY', price: '58000 أوقية', img: 'MY_WAY.png' },
-      { name: 'Dolce_&_Gabbana_The_One', price: '57000 أوقية', img: 'Dolce_&_Gabbana_The_One.png' },
-      { name: 'You_Intensely', price: '54000 أوقية', img: 'You_Intensely.png' },
-      { name: 'Supremacy_Collectors_Edition', price: '38000 أوقية', img: 'Supremacy_Collectors_Edition.png' },
-      { name: 'Hawas_Black_Rasasi', price: '38000 أوقية', img: 'Hawas_Black_Rasasi.png' },
-      { name: 'Club_de_Nuit_Intense_Man_200ml', price: '35000 أوقية', img: 'Club_de_Nuit_Intense_Man_200ml.png' },
-      { name: 'Supremacy_Not_Only_Intense', price: '29000 أوقية', img: 'Supremacy_Not_Only_Intense.png' },
-      { name: 'Oud_Lavender', price: '26000 أوقية', img: 'Oud_Lavender.png' },
-      { name: '9PM_Rebel', price: '25000 أوقية', img: '9PM_Rebel.png' },
-      { name: 'Liquid_Brun', price: '23000 أوقية', img: 'Liquid_Brun.png' },
-      { name: 'Odyssey_Spectra', price: '21000 أوقية', img: 'Odyssey_Spectra.png' },
-      { name: 'Club_de_Nuit_Intense_Man', price: '20000 أوقية', img: 'Club_de_Nuit_Intense_Man.png' },
-      { name: 'Hawas_Elixir', price: '20000 أوقية', img: 'Hawas_Elixir.png' },
-      { name: 'Club_De_Nuit_Urban_Elixir', price: '19000 أوقية', img: 'Club_De_Nuit_Urban_Elixir.png' },
-      { name: '9AM_Dive', price: '19000 أوقية', img: '9AM_Dive.png' },
-      { name: 'Turathi_Blue', price: '19000 أوقية', img: 'Turathi_Blue.png' },
-      { name: 'Hawas_for_Him', price: '16000 أوقية', img: 'Hawas_for_Him.png' },
+      { name: 'Jean Paul Gaultier Le Male Elixir', price: '100000 أوقية', img: 'Jean_Paul_Gaultier_Le_Male_Elixir.png' },
+      { name: 'Dior Sauvage 200ml', price: '100000 أوقية', img: 'Dior_sauvage_200ml.png' },
+      { name: 'Jean Paul Gaultier Paradise', price: '76200 أوقية', img: 'Jean_Paul_Gaultier_Paradise.png' },
+      { name: 'Tom Ford Noir', price: '72000 أوقية', img: 'Tom_Ford_Noir.png' },
+      { name: '212 VIP Black', price: '61000 أوقية', img: '212_VIP_Black.png' },
+      { name: 'Acqua di Gio Armani', price: '61000 أوقية', img: 'Acqua_di_Gio_Armani.png' },
+      { name: 'La Nuit Trésor', price: '58000 أوقية', img: 'La_Nuit_Trésor.png' },
+      { name: 'My Way', price: '58000 أوقية', img: 'MY_WAY.png' },
+      { name: 'Dolce & Gabbana The One', price: '57000 أوقية', img: 'Dolce_&_Gabbana_The_One.png' },
+      { name: 'You Intensely', price: '54000 أوقية', img: 'You_Intensely.png' },
+      { name: 'Supremacy Collectors Edition', price: '38000 أوقية', img: 'Supremacy_Collectors_Edition.png' },
+      { name: 'Hawas Black Rasasi', price: '38000 أوقية', img: 'Hawas_Black_Rasasi.png' },
+      { name: 'Club de Nuit Intense Man 200ml', price: '35000 أوقية', img: 'Club_de_Nuit_Intense_Man_200ml.png' },
+      { name: 'Supremacy Not Only Intense', price: '29000 أوقية', img: 'Supremacy_Not_Only_Intense.png' },
+      { name: 'Oud Lavender', price: '26000 أوقية', img: 'Oud_Lavender.png' },
+      { name: '9PM Rebel', price: '25000 أوقية', img: '9PM_Rebel.png' },
+      { name: 'Liquid Brun', price: '23000 أوقية', img: 'Liquid_Brun.png' },
+      { name: 'Odyssey Spectra', price: '21000 أوقية', img: 'Odyssey_Spectra.png' },
+      { name: 'Club de Nuit Intense Man', price: '20000 أوقية', img: 'Club_de_Nuit_Intense_Man.png' },
+      { name: 'Hawas Elixir', price: '20000 أوقية', img: 'Hawas_Elixir.png' },
+      { name: 'Club De Nuit Urban Elixir', price: '19000 أوقية', img: 'Club_De_Nuit_Urban_Elixir.png' },
+      { name: '9AM Dive', price: '19000 أوقية', img: '9AM_Dive.png' },
+      { name: 'Turathi Blue', price: '19000 أوقية', img: 'Turathi_Blue.png' },
+      { name: 'Hawas for Him', price: '16000 أوقية', img: 'Hawas_for_Him.png' },
       { name: '9PM', price: '16000 أوقية', img: '9PM.png' },
-      { name: 'Hawas_Ice_for_Him', price: '16000 أوقية', img: 'Hawas_Ice_for_Him.png' },
+      { name: 'Hawas Ice for Him', price: '16000 أوقية', img: 'Hawas_Ice_for_Him.png' },
       { name: 'Confidential', price: '15000 أوقية', img: 'Confidential.png' },
-      { name: 'Al_Wisam', price: '15000 أوقية', img: 'Al_Wisam.png' }
-    ];const productGrid = document.getElementById('product-grid');
+      { name: 'Al Wisam', price: '15000 أوقية', img: 'Al_Wisam.png' }
+    ];
 
-products.forEach((product) => {
-  const html = `
-    <div class="product">
-      <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/200?text=عطر'">
-      <h3>${product.name.replaceAll('_', ' ')}</h3>
-      <div class="price">${product.price}</div>
-      <button onclick="order('${encodeURIComponent(product.name)}')">اطلب الآن</button>
-    </div>
-  `;
-  productGrid.insertAdjacentHTML('beforeend', html);
-});
+    const productGrid = document.getElementById('product-grid');
 
-function order(productName) {
-  window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName.replaceAll('_', ' '))}`;
-}
+    products.forEach((product) => {
+      const html = `
+        <div class="product">
+          <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300?text=عطر'">
+          <h3>${product.name}</h3>
+          <div class="price">${product.price}</div>
+          <button onclick="order('${encodeURIComponent(product.name)}')">اطلب الآن</button>
+        </div>
+      `;
+      productGrid.insertAdjacentHTML('beforeend', html);
+    });
 
+    function order(productName) {
+      window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}`;
+    }
   </script>
 </body>
 </html>
