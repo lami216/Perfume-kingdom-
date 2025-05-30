@@ -37,6 +37,25 @@
       margin: auto;
       padding: 2rem;
     }
+    /* إضافة أنماط لشريط البحث */
+    .search-bar {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .search-bar input {
+      padding: 0.75rem;
+      width: 100%;
+      max-width: 500px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: 'Cairo', sans-serif;
+    }
+    .search-bar input:focus {
+      outline: none;
+      border-color: #b8860b;
+      box-shadow: 0 0 5px rgba(184, 134, 11, 0.3);
+    }
     .product-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -82,26 +101,26 @@
     /* تعديلات للشاشات الصغيرة (مثل الهواتف في الوضع الطولي) */
     @media (max-width: 768px) {
       .product-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* عمود أو عمودين حسب العرض */
-        gap: 1rem; /* تقليل المسافة بين العناصر */
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
       }
       .product {
         padding: 1rem;
       }
       .product img {
-        height: auto; /* إزالة الارتفاع الثابت */
-        aspect-ratio: 1 / 1; /* نسبة عرض إلى ارتفاع مربعة */
-        object-fit: contain; /* الصورة تظهر كاملة بدون تقطيع */
-        max-height: 200px; /* أقصى ارتفاع للصورة */
+        height: auto;
+        aspect-ratio: 1 / 1;
+        object-fit: contain;
+        max-height: 200px;
       }
       .product h3 {
-        font-size: 1.2rem; /* تصغير حجم الخط للعنوان */
+        font-size: 1.2rem;
       }
       .product p {
-        font-size: 0.9rem; /* تصغير حجم النص */
+        font-size: 0.9rem;
       }
       .product button {
-        padding: 0.5rem 1rem; /* تصغير حجم الزر */
+        padding: 0.5rem 1rem;
         font-size: 0.9rem;
       }
     }
@@ -109,13 +128,16 @@
     /* تعديلات إضافية للشاشات الصغيرة جدًا */
     @media (max-width: 480px) {
       .container {
-        padding: 1rem; /* تقليل الهوامش */
+        padding: 1rem;
       }
       header h1 {
-        font-size: 1.8rem; /* تصغير عنوان الهيدر */
+        font-size: 1.8rem;
       }
       header p {
-        font-size: 0.9rem; /* تصغير نص الهيدر */
+        font-size: 0.9rem;
+      }
+      .search-bar input {
+        max-width: 100%;
       }
     }
   </style>
@@ -127,6 +149,10 @@
   </header>
   <div class="container">
     <h2>عطورنا المختارة</h2>
+    <!-- إضافة شريط البحث -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="ابحث عن عطر..." oninput="filterProducts()">
+    </div>
     <div class="product-grid" id="product-grid"></div>
   </div>
   <script>
@@ -135,45 +161,67 @@
       { name: 'jean paul gaultier le male elixir', desc: 'عطر شبابي عصري بنفحات حارة - 100000 أوقية', img: 'jean_paul_gaultier_le_male_elixir.png' },
       { name: 'Dior sauvage', desc: 'أحد أشهر العطور الرجالية حول العالم - 100000 أوقية', img: 'Dior_sauvage_200ml.png' },
       { name: 'officer', desc: 'عطر رسمي أنيق يلائم جميع المناسبات - 15000 أوقية', img: 'officer.png' },
-      { name: 'jean_paul_gaultier_paradise', desc: '76200 أوقية', img: 'jean_paul_gaultier_paradise.png' },
-      { name: 'tom_ford_noir', desc: '72000 أوقية', img: 'tom_ford_noir.png' },
-      { name: '212_VIP_black', desc: '61000 أوقية', img: '212_VIP_black.png' },
-      { name: 'Acqua_di_Gio_Armani', desc: '61000 أوقية', img: 'Acqua_di_Gio_Armani.png' },
-      { name: 'La_Nuit_Trésor', desc: '58000 أوقية', img: 'La_Nuit_Tresor.png' },
-      { name: 'MY_WAY', desc: '58000 أوقية', img: 'MY_WAY.png' },
-      { name: 'Dolce_and_Gabbana_the_one', desc: '57000 أوقية', img: 'Dolce_and_Gabbana_the_one.png' },
-      { name: 'You_Intensely', desc: '54000 أوقية', img: 'You_Intensely.png' },
-      { name: 'Supremacy_Collectors_Edition', desc: '38000 أوقية', img: 'Supremacy_Collector_s_Edition.png' },
-      { name: 'Hawas_Black_Rasasi', desc: '38000 أوقية', img: 'Hawas_Black_Rasasi.png' },
-      { name: 'Club_de_Nuit_Intense_Man_200ml', desc: '35000 أوقية', img: 'Club_de_Nuit_Intense_Man_200ml.png' },
-      { name: 'Supremacy_Not_Only_Intense', desc: '29000 أوقية', img: 'Supremacy_Not_Only_Intense.png' },
-      { name: 'Oud_lavender', desc: '26000 أوقية', img: 'Oud_lavender.png' },
-      { name: '9PM_rebel', desc: '25000 أوقية', img: '9PM_Rebel.png' },
-      { name: 'Liquid_Brun', desc: '23000 أوقية', img: 'Liquid_Brun.png' },
-      { name: 'Odyssey_Spectra', desc: '21000 أوقية', img: 'Odyssey_Spectra.png' },
-      { name: 'hawas_elixir', desc: '20000 أوقية', img: 'hawas_elixir.png' },
-      { name: 'Club_De_Nuit_Urban_Elixir', desc: '19000 أوقية', img: 'Club_De_Nuit_Urban_Elixir.png' },
-      { name: '9am_Dive', desc: '19000 أوقية', img: '9am_Dive.png' },
-      { name: 'Turathi_Blue', desc: '19000 أوقية', img: 'Turathi_Blue.png' },
-      { name: 'Hawas_for_Him', desc: '16000 أوقية', img: 'Hawas_for_Him.png' },
-      { name: '9PM', desc: '16000 أوقية', img: '9PM.png' },
-      { name: 'Hawas_Ice_for_Him', desc: '16000 أوقية', img: 'Hawas_Ice_for_Him.png' },
-      { name: 'Confidential', desc: '15000 أوقية', img: 'Confidential.png' },
-      { name: 'Al_Wisam', desc: '15000 أوقية', img: 'Al_Wisam.png' }
+      { name: 'jean_paul_gaultier_paradise', desc: 'عطر نسائي فاخر بنفحات زهرية منعشة - 76200 أوقية', img: 'jean_paul_gaultier_paradise.png' },
+      { name: 'tom_ford_noir', desc: 'عطر رجالي غامض بنفحات خشبية دافئة - 72000 أوقية', img: 'tom_ford_noir.png' },
+      { name: '212_VIP_black', desc: 'عطر شبابي جريء بنكهات عصرية - 61000 أوقية', img: '212_VIP_black.png' },
+      { name: 'Acqua_di_Gio_Armani', desc: 'عطر رجالي منعش مستوحى من البحر - 61000 أوقية', img: 'Acqua_di_Gio_Armani.png' },
+      { name: 'La_Nuit_Trésor', desc: 'عطر نسائي رومانسي بنفحات الفانيليا - 58000 أوقية', img: 'La_Nuit_Tresor.png' },
+      { name: 'MY_WAY', desc: 'عطر نسائي أنيق بنكهات زهرية مشرقة - 58000 أوقية', img: 'MY_WAY.png' },
+      { name: 'Dolce_and_Gabbana_the_one', desc: 'عطر نسائي فاخر بنفحات شرقية دافئة - 57000 أوقية', img: 'Dolce_and_Gabbana_the_one.png' },
+      { name: 'You_Intensely', desc: 'عطر نسائي قوي بنكهات فاكهية جذابة - 54000 أوقية', img: 'You_Intensely.png' },
+      { name: 'Supremacy_Collectors_Edition', desc: 'عطر رجالي مميز بنفحات شرقية فاخرة - 38000 أوقية', img: 'Supremacy_Collector_s_Edition.png' },
+      { name: 'Hawas_Black_Rasasi', desc: 'عطر رجالي قوي بنكهات خشبية منعشة - 38000 أوقية', img: 'Hawas_Black_Rasasi.png' },
+      { name: 'Club_de_Nuit_Intense_Man_200ml', desc: 'عطر رجالي مكثف بنفحات فاكهية وعنبرية - 35000 أوقية', img: 'Club_de_Nuit_Intense_Man_200ml.png' },
+      { name: 'Supremacy_Not_Only_Intense', desc: 'عطر رجالي عصري بنكهات قوية ومنعشة - 29000 أوقية', img: 'Supremacy_Not_Only_Intense.png' },
+      { name: 'Oud_lavender', desc: 'عطر شرقي مميز يمزج العود واللافندر - 26000 أوقية', img: 'Oud_lavender.png' },
+      { name: '9PM_rebel', desc: 'عطر شبابي مفعم بالحيوية بنكهات جريئة - 25000 أوقية', img: '9PM_Rebel.png' },
+      { name: 'Liquid_Brun', desc: 'عطر رجالي كلاسيكي بنفحات خشبية دافئة - 23000 أوقية', img: 'Liquid_Brun.png' },
+      { name: 'Odyssey_Spectra', desc: 'عطر منعش بنكهات مائية وفاكهية - 21000 أوقية', img: 'Odyssey_Spectra.png' },
+      { name: 'hawas_elixir', desc: 'عطر رجالي منعش بنكهات حمضية قوية - 20000 أوقية', img: 'hawas_elixir.png' },
+      { name: 'Club_De_Nuit_Urban_Elixir', desc: 'عطر شبابي عصري بنكهات منعشة - 19000 أوقية', img: 'Club_De_Nuit_Urban_Elixir.png' },
+      { name: '9am_Dive', desc: 'عطر منعش مستوحى من الصباح البارد - 19000 أوقية', img: '9am_Dive.png' },
+      { name: 'Turathi_Blue', desc: 'عطر شرقي منعش بنفحات بحرية - 19000 أوقية', img: 'Turathi_Blue.png' },
+      { name: 'Hawas_for_Him', desc: 'عطر رجالي منعش بنكهات مائية وحمضية - 16000 أوقية', img: 'Hawas_for_Him.png' },
+      { name: '9PM', desc: 'عطر شبابي جذاب بنكهات فاكهية دافئة - 16000 أوقية', img: '9PM.png' },
+      { name: 'Hawas_Ice_for_Him', desc: 'عطر رجالي منعش بنكهات جليدية - 16000 أوقية', img: 'Hawas_Ice_for_Him.png' },
+      { name: 'Confidential', desc: 'عطر أنيق بنفحات غامضة وفاخرة - 15000 أوقية', img: 'Confidential.png' },
+      { name: 'Al_Wisam', desc: 'عطر شرقي كلاسيكي بنكهات دافئة - 15000 أوقية', img: 'Al_Wisam.png' }
     ];
 
     const productGrid = document.getElementById('product-grid');
-    products.forEach((product) => {
-      const html = `
-        <div class="product">
-          <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
-          <h3>${product.name.replace(/_/g, ' ')}</h3>
-          <p>${product.desc}</p>
-          <button onclick="order('${encodeURIComponent(product.name)}')">اطلب الآن</button>
-        </div>
-      `;
-      productGrid.insertAdjacentHTML('beforeend', html);
-    });
+
+    // دالة لعرض المنتجات
+    function displayProducts(filteredProducts = products) {
+      productGrid.innerHTML = ''; // إفراغ الشبكة
+      filteredProducts.forEach((product) => {
+        const html = `
+          <div class="product">
+            <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
+            <h3>${product.name.replace(/_/g, ' ')}</h3>
+            <p>${product.desc}</p>
+            <button onclick="order('${encodeURIComponent(product.name)}')">اطلب الآن</button>
+          </div>
+        `;
+        productGrid.insertAdjacentHTML('beforeend', html);
+      });
+    }
+
+    // دالة تصفية المنتجات بناءً على البحث
+    function filterProducts() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const matchedProducts = products.filter(product =>
+        product.name.toLowerCase().includes(searchTerm) || 
+        product.desc.toLowerCase().includes(searchTerm)
+      );
+      const unmatchedProducts = products.filter(
+        product => !matchedProducts.includes(product)
+      );
+      // عرض المنتجات المطابقة أولاً ثم غير المطابقة
+      displayProducts([...matchedProducts, ...unmatchedProducts]);
+    }
+
+    // عرض جميع المنتجات عند تحميل الصفحة
+    displayProducts();
 
     function order(productName) {
       window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}`;
