@@ -22,9 +22,9 @@
       scroll-behavior: smooth;
     }
     header {
-      background: linear-gradient(to right, #d4af37, #b8860b);
+      background:就在: linear-gradient(to right, #d4af37, #b8860b);
       color: white;
-      padding: 3rem 1rem;
+      padding: 2rem;
       text-align: center;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       width: 100%;
@@ -33,13 +33,13 @@
       z-index: 1000;
     }
     header h1 {
-      font-size: 2.8rem;
+      font-size: 2.5rem;
       margin: 0;
       text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
     }
     header p {
-      font-size: 1.2rem;
-      margin-top: 0.75rem;
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
     }
     .container {
       max-width: 1280px;
@@ -48,17 +48,21 @@
     }
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1.5rem;
       margin-top: 2rem;
     }
     .product {
       background: white;
-      padding: 1.5rem;
+      padding: 1rem;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       text-align: center;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      aspect-ratio: 1 / 1; /* جعل المنتج مربعًا */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .product:hover {
       transform: translateY(-5px);
@@ -66,25 +70,21 @@
     }
     .product img {
       width: 100%;
-      height: 250px;
+      height: 200px;
       object-fit: cover;
       border-radius: 8px;
       display: block;
+      aspect-ratio: 1 / 1; /* جعل الصورة مربعة */
     }
     .product h3 {
-      font-size: 1.3rem;
-      margin: 0.75rem 0;
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
       color: #2c2c2c;
     }
-    .product p {
-      font-size: 0.9rem;
-      color: #666;
-      margin-bottom: 1rem;
-    }
     .product .price {
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: #b8860b;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.5rem;
       font-weight: bold;
     }
     .product button {
@@ -96,6 +96,7 @@
       cursor: pointer;
       font-size: 1rem;
       transition: background 0.3s ease;
+      margin-top: auto; /* دفع الزر للأسفل */
     }
     .product button:hover {
       background: linear-gradient(to right, #b8860b, #d4af37);
@@ -150,7 +151,10 @@
     }
     @media (max-width: 768px) {
       .product-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+      .product img {
+        height: 150px;
       }
       header h1 {
         font-size: 2rem;
@@ -162,6 +166,9 @@
     @media (max-width: 480px) {
       .product-grid {
         grid-template-columns: 1fr;
+      }
+      .product img {
+        height: 200px;
       }
     }
   </style>
@@ -211,7 +218,7 @@
       { name: 'Dior Sauvage 200ml', price: '100000 أوقية', img: 'Dior_sauvage_200ml.png' },
       { name: 'Jean Paul Gaultier Paradise', price: '76200 أوقية', img: 'Jean_Paul_Gaultier_Paradise.png' },
       { name: 'Tom Ford Noir', price: '72000 أوقية', img: 'Tom_Ford_Noir.png' },
-      { name: '212 VIP Black', price: '61000 أوقية', img: '212_VIP_Black.png' },
+      { name: 'VIP Black 212', price: '61000 أوقية', img: '212_VIP_Black.png' },
       { name: 'Acqua di Gio Armani', price: '61000 أوقية', img: 'Acqua_di_Gio_Armani.png' },
       { name: 'La Nuit Trésor', price: '58000 أوقية', img: 'La_Nuit_Trésor.png' },
       { name: 'My Way', price: '58000 أوقية', img: 'MY_WAY.png' },
@@ -242,7 +249,7 @@
     products.forEach((product) => {
       const html = `
         <div class="product">
-          <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300?text=عطر'">
+          <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
           <h3>${product.name}</h3>
           <div class="price">${product.price}</div>
           <button onclick="order('${encodeURIComponent(product.name)}')">اطلب الآن</button>
