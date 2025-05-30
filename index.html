@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -77,6 +78,46 @@
     .product button:hover {
       background: linear-gradient(to right, #b8860b, #d4af37);
     }
+
+    /* تعديلات للشاشات الصغيرة (مثل الهواتف في الوضع الطولي) */
+    @media (max-width: 768px) {
+      .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* عمود أو عمودين حسب العرض */
+        gap: 1rem; /* تقليل المسافة بين العناصر */
+      }
+      .product {
+        padding: 1rem;
+      }
+      .product img {
+        height: auto; /* إزالة الارتفاع الثابت */
+        aspect-ratio: 1 / 1; /* نسبة عرض إلى ارتفاع مربعة */
+        object-fit: contain; /* الصورة تظهر كاملة بدون تقطيع */
+        max-height: 200px; /* أقصى ارتفاع للصورة */
+      }
+      .product h3 {
+        font-size: 1.2rem; /* تصغير حجم الخط للعنوان */
+      }
+      .product p {
+        font-size: 0.9rem; /* تصغير حجم النص */
+      }
+      .product button {
+        padding: 0.5rem 1rem; /* تصغير حجم الزر */
+        font-size: 0.9rem;
+      }
+    }
+
+    /* تعديلات إضافية للشاشات الصغيرة جدًا */
+    @media (max-width: 480px) {
+      .container {
+        padding: 1rem; /* تقليل الهوامش */
+      }
+      header h1 {
+        font-size: 1.8rem; /* تصغير عنوان الهيدر */
+      }
+      header p {
+        font-size: 0.9rem; /* تصغير نص الهيدر */
+      }
+    }
   </style>
 </head>
 <body>
@@ -121,23 +162,24 @@
       { name: 'Hawas_Ice_for_Him', desc: '16000 أوقية', img: 'Hawas_Ice_for_Him.png' },
       { name: 'Confidential', desc: '15000 أوقية', img: 'Confidential.png' },
       { name: 'Al_Wisam', desc: '15000 أوقية', img: 'Al_Wisam.png' }
-    ];const productGrid = document.getElementById('product-grid');
-products.forEach((product) => {
-  const html = `
-    <div class="product">
-      <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
-      <h3>${product.name.replace(/_/g, ' ')}</h3>
-      <p>${product.desc}</p>
-      <button onclick="order('${encodeURIComponent(product.name)}')">اطلب الآن</button>
-    </div>
-  `;
-  productGrid.insertAdjacentHTML('beforeend', html);
-});
+    ];
 
-function order(productName) {
-  window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}`;
-}
+    const productGrid = document.getElementById('product-grid');
+    products.forEach((product) => {
+      const html = `
+        <div class="product">
+          <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
+          <h3>${product.name.replace(/_/g, ' ')}</h3>
+          <p>${product.desc}</p>
+          <button onclick="order('${encodeURIComponent(product.name)}')">اطلب الآن</button>
+        </div>
+      `;
+      productGrid.insertAdjacentHTML('beforeend', html);
+    });
 
+    function order(productName) {
+      window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}`;
+    }
   </script>
 </body>
 </html>
