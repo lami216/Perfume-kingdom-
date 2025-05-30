@@ -74,7 +74,7 @@
       object-fit: cover;
       border-radius: 8px;
     }
-    .product351 h3 {
+    .product h3 {
       font-size: 1.4rem;
       margin: 0.5rem 0;
       color: #2c2c2c;
@@ -84,7 +84,7 @@
       color: #666;
       margin-bottom: 1rem;
     }
-    .product button {
+    .product button.order-btn {
       background: linear-gradient(to right, #d4af37, #b8860b);
       color: white;
       border: none;
@@ -93,25 +93,37 @@
       cursor: pointer;
       font-size: 1rem;
       width: 100%;
-      margin-bottom: 0.5rem; /* إضافة مسافة أسفل الزر */
+      margin-bottom: 0.5rem;
     }
-    .product button:hover {
+    .product button.order-btn:hover {
       background: linear-gradient(to right, #b8860b, #d4af37);
     }
-    /* أنماط القائمة المنسدلة */
-    .product select {
-      padding: 0.5rem;
-      width: 100%;
+    /* أنماط أزرار الحجم */
+    .size-options {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .size-btn {
+      padding: 0.4rem 0.8rem;
       border: 1px solid #ccc;
       border-radius: 6px;
-      font-size: 0.95rem;
+      background: #f9f9f9;
+      font-size: 0.85rem;
       font-family: 'Cairo', sans-serif;
-      background: #fff;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
-    .product select:focus {
-      outline: none;
-      border-color: #b8860b;
+    .size-btn.selected {
+      background: #28a745;
+      color: white;
+      border-color: #28a745;
+    }
+    .size-btn:hover {
+      background: #e0e0e0;
+    }
+    .size-btn.selected:hover {
+      background: #218838;
     }
 
     /* تعديلات للشاشات الصغيرة (مثل الهواتف في الوضع الطولي) */
@@ -135,13 +147,13 @@
       .product p {
         font-size: 0.9rem;
       }
-      .product button {
+      .product button.order-btn {
         padding: 0.5rem 1rem;
         font-size: 0.9rem;
       }
-      .product select {
-        font-size: 0.9rem;
-        padding: 0.4rem;
+      .size-btn {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
       }
     }
 
@@ -158,6 +170,10 @@
       }
       .search-bar input {
         max-width: 100%;
+      }
+      .size-btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
       }
     }
   </style>
@@ -218,15 +234,27 @@
             <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
             <h3>${product.name.replace(/_/g, ' ')}</h3>
             <p>${product.desc}</p>
-            <button onclick="order('${encodeURIComponent(product.name)}', 'size${index}')">اطلب الآن</button>
-            <select id="size${index}" name="size">
-              <option value="كامل">كامل</option>
-              <option value="10 مل">10 مل</option>
-            </select>
+            <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, 'كامل', ${index})">اطلب الآن</button>
+            <div class="size-options">
+              <button class="size-btn selected" onclick="selectSize(this, 'كامل', ${index})">كامل</button>
+              <button class="size-btn" onclick="selectSize(this, '10 مل', ${index})">10 مل</button>
+            </div>
           </div>
         `;
         productGrid.insertAdjacentHTML('beforeend', html);
       });
+    }
+
+    // دالة لتحديد الحجم وتغيير اللون
+    function selectSize(button, size, index) {
+      // إزالة التحديد من جميع الأزرار في نفس المنتج
+      const buttons = document.querySelectorAll(`#product-grid .product:nth-child(${index + 1}) .size-btn`);
+      buttons.forEach(btn => btn.classList.remove('selected'));
+      // إضافة التحديد للزر المضغوط
+      button.classList.add('selected');
+      // تحديث حجم الطلب في زر "اطلب الآن"
+      const orderButton = document.querySelector(`#product-grid .product:nth-child(${index + 1}) .order-btn`);
+      orderButton.setAttribute('onclick', `order('${encodeURIComponent(products[index].name)}', this, '${size}', ${index})`);
     }
 
     // دالة تصفية المنتجات بناءً على البحث
@@ -246,10 +274,9 @@
     // عرض جميع المنتجات عند تحميل الصفحة
     displayProducts();
 
-    function order(productName, sizeId) {
-      const size = document.getElementById(sizeId).value;
+    function order(productName, button, size, index) {
       window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)} بحجم ${size}`;
     }
   </script>
 </body>
-  </html>
+</html>
