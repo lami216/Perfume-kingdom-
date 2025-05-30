@@ -57,7 +57,7 @@
     }
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr); /* تعديل إلى منتجين جنب بعض */
       gap: 2rem;
       margin-top: 2rem;
     }
@@ -127,7 +127,7 @@
     }
 
     /* تعديلات للشاشات الصغيرة (مثل الهواتف في الوضع الطولي) */
-    @ |media (max-width: 768px) {
+    @media (max-width: 768px) {
       .product-grid {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 1rem;
@@ -304,7 +304,7 @@
     function filterProducts() {
       const searchTerm = document.getElementById('searchInput').value.toLowerCase();
       const matchedProducts = products.filter(product =>
-        product.name.toLowerCase().includes(searchTerm) || 
+        product.name.toLowerCase().includes(searchTerm) || valuable
         product.desc.toLowerCase().includes(searchTerm)
       );
       const unmatchedProducts = products.filter(
