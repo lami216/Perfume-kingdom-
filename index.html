@@ -97,6 +97,7 @@
       height: 250px;
       object-fit: cover;
       border-radius: 8px;
+      cursor: pointer;
     }
     .product h3 {
       font-size: 1.4rem;
@@ -250,45 +251,277 @@
     <div id="remaining-section"></div>
   </div>
   <script>
-    // بيانات المنتجات (يمكن نقلها إلى ملف JSON خارجي)
+    // بيانات المنتجات (مع إضافة تفاصيل إضافية)
     const productsData = {
       products: [
-        { name: 'moosouf', desc: 'عطر رجالي شرقي فاخر يدوم طويلاً - 20000 أوقية', img: 'Moosouf.png', category: 'men' },
-        { name: 'jean paul gaultier le male elixir', desc: 'عطر شبابي عصري بنفحات حارة - 100000 أوقية', img: 'jean_paul_gaultier_le_male_elixir.png', category: 'men' },
-        { name: 'Dior sauvage', desc: 'أحد أشهر العطور الرجالية حول العالم - 100000 أوقية', img: 'Dior_sauvage_200ml.png', category: 'men' },
-        { name: 'officer', desc: 'عطر رسمي أنيق يلائم جميع المناسبات - 15000 أوقية', img: 'officer.png', category: 'men' },
-        { name: 'jean_paul_gaultier_paradise', desc: 'عطر نسائي فاخر بنفحات زهرية منعشة - 76200 أوقية', img: 'jean_paul_gaultier_paradise.png', category: 'women' },
-        { name: 'tom_ford_noir', desc: 'عطر رجالي غامض بنفحات خشبية دافئة - 72000 أوقية', img: 'tom_ford_noir.png', category: 'men' },
-        { name: '212_VIP_black', desc: 'عطر شبابي جريء بنكهات عصرية - 61000 أوقية', img: '212_VIP_black.png', category: 'men' },
-        { name: 'Acqua_di_Gio_Armani', desc: 'عطر رجالي منعش مستوحى من البحر - 61000 أوقية', img: 'Acqua_di_Gio_Armani.png', category: 'men' },
-        { name: 'La_Nuit_Trésor', desc: 'عطر نسائي رومانسي بنفحات الفانيليا - 58000 أوقية', img: 'La_Nuit_Tresor.png', category: 'women' },
-        { name: 'MY_WAY', desc: 'عطر نسائي أنيق بنكهات زهرية مشرقة - 58000 أوقية', img: 'MY_WAY.png', category: 'women' },
-        { name: 'Dolce_and_Gabbana_the_one', desc: 'عطر نسائي فاخر بنفحات شرقية دافئة - 57000 أوقية', img: 'Dolce_and_Gabbana_the_one.png', category: 'women' },
-        { name: 'You_Intensely', desc: 'عطر نسائي قوي بنكهات فاكهية جذابة - 54000 أوقية', img: 'You_Intensely.png', category: 'women' },
-        { name: 'Supremacy_Collectors_Edition', desc: 'عطر رجالي مميز بنفحات شرقية فاخرة - 38000 أوقية', img: 'Supremacy_Collector_s_Edition.png', category: 'men' },
-        { name: 'Hawas_Black_Rasasi', desc: 'عطر رجالي قوي بنكهات خشبية منعشة - 38000 أوقية', img: 'Hawas_Black_Rasasi.png', category: 'men' },
-        { name: 'Club_de_Nuit_Intense_Man_200ml', desc: 'عطر رجالي مكثف بنفحات فاكهية وعنبرية - 35000 أوقية', img: 'Club_de_Nuit_Intense_Man_200ml.png', category: 'men' },
-        { name: 'Supremacy_Not_Only_Intense', desc: 'عطر رجالي عصري بنكهات قوية ومنعشة - 29000 أوقية', img: 'Supremacy_Not_Only_Intense.png', category: 'men' },
-        { name: 'Oud_lavender', desc: 'عطر شرقي مميز يمزج العود واللافندر - 26000 أوقية', img: 'Oud_lavender.png', category: 'unisex' },
-        { name: '9PM_rebel', desc: 'عطر شبابي مفعم بالحيوية بنكهات جريئة - 25000 أوقية', img: '9PM_Rebel.png', category: 'men' },
-        { name: 'Liquid_Brun', desc: 'عطر رجالي كلاسيكي بنفحات خشبية دافئة - 23000 أوقية', img: 'Liquid_Brun.png', category: 'men' },
-        { name: 'Odyssey_Spectra', desc: 'عطر منعش بنكهات مائية وفاكهية - 21000 أوقية', img: 'Odyssey_Spectra.png', category: 'unisex' },
-        { name: 'hawas_elixir', desc: 'عطر رجالي منعش بنكهات حمضية قوية - 20000 أوقية', img: 'hawas_elixir.png', category: 'men' },
-        { name: 'Club_De_Nuit_Urban_Elixir', desc: 'عطر شبابي عصري بنكهات منعشة - 19000 أوقية', img: 'Club_De_Nuit_Urban_Elixir.png', category: 'men' },
-        { name: '9am_Dive', desc: 'عطر منعش مستوحى من الصباح البارد - 19000 أوقية', img: '9am_Dive.png', category: 'unisex' },
-        { name: 'Turathi_Blue', desc: 'عطر شرقي منعش بنفحات بحرية - 19000 أوقية', img: 'Turathi_Blue.png', category: 'unisex' },
-        { name: 'Hawas_for_Him', desc: 'عطر رجالي منعش بنكهات مائية وحمضية - 16000 أوقية', img: 'Hawas_for_Him.png', category: 'men' },
-        { name: '9PM', desc: 'عطر شبابي جذاب بنكهات فاكهية دافئة - 16000 أوقية', img: '9PM.png', category: 'men' },
-        { name: 'Hawas_Ice_for_Him', desc: 'عطر رجالي منعش بنكهات جليدية - 16000 أوقية', img: 'Hawas_Ice_for_Him.png', category: 'men' },
-        { name: 'Confidential', desc: 'عطر أنيق بنفحات غامضة وفاخرة - 15000 أوقية', img: 'Confidential.png', category: 'unisex' },
-        { name: 'Al_Wisam', desc: 'عطر شرقي كلاسيكي بنكهات دافئة - 15000 أوقية', img: 'Al_Wisam.png', category: 'unisex' }
+        { 
+          name: 'moosouf', 
+          desc: 'عطر رجالي شرقي فاخر يدوم طويلاً - 20000 أوقية', 
+          img: 'Moosouf.png', 
+          category: 'men', 
+          longevity: 'طويل جدًا (8-12 ساعة)', 
+          suitableTimes: 'الشتاء والخريف - مناسب للمساء والمناسبات الرسمية', 
+          symbolsMeaning: '🍁: دافئ | ❄️: قوي | 🌙: ليلي' 
+        },
+        { 
+          name: 'jean paul gaultier le male elixir', 
+          desc: 'عطر شبابي عصري بنفحات حارة - 100000 أوقية', 
+          img: 'jean_paul_gaultier_le_male_elixir.png', 
+          category: 'men', 
+          longevity: 'طويل (6-8 ساعات)', 
+          suitableTimes: 'الخريف والشتاء - مناسب للمساء', 
+          symbolsMeaning: '🍁: دافئ | ❄️: قوي | 🌙: ليلي' 
+        },
+        { 
+          name: 'Dior sauvage', 
+          desc: 'أحد أشهر العطور الرجالية حول العالم - 100000 أوقية', 
+          img: 'Dior_sauvage_200ml.png', 
+          category: 'men', 
+          longevity: 'متوسط إلى طويل (5-7 ساعات)', 
+          suitableTimes: 'جميع الفصول - مناسب للنهار والليل', 
+          symbolsMeaning: '🌱: منعش | ☂️: متعدد الاستخدام | ☀️: نهاري' 
+        },
+        { 
+          name: 'officer', 
+          desc: 'عطر رسمي أنيق يلائم جميع المناسبات - 15000 أوقية', 
+          img: 'officer.png', 
+          category: 'men', 
+          longevity: 'متوسط (4-6 ساعات)', 
+          suitableTimes: 'جميع الفصول - مناسب للعمل والمناسبات الرسمية', 
+          symbolsMeaning: '🌱: منعش | 🍁: دافئ | ☀️: نهاري' 
+        },
+        { 
+          name: 'la_belle_paradise_garden', 
+          desc: 'عطر نسائي مستوحى من لوتس أزرق وفانيليا - 76200 أوقية', 
+          img: 'jean_paul_gaultier_paradise.png', 
+          category: 'women', 
+          longevity: 'طويل (6-8 ساعات)', 
+          suitableTimes: 'الربيع والصيف - مناسب للمساء', 
+          symbolsMeaning: '☂️: متعدد الاستخدام | 🌱: منعش | ☀️: نهاري' 
+        },
+        { 
+          name: 'tom_ford_noir', 
+          desc: 'عطر رجالي غامض بنفحات خشبية دافئة - 72000 أوقية', 
+          img: 'tom_ford_noir.png', 
+          category: 'men', 
+          longevity: 'طويل جدًا (8-10 ساعات)', 
+          suitableTimes: 'الشتاء والخريف - مناسب للمساء', 
+          symbolsMeaning: '🍁: دافئ | ❄️: قوي | 🌙: ليلي' 
+        },
+        { 
+          name: '212_VIP_black', 
+          desc: 'عطر شبابي جريء بنكهات عصرية - 61000 أوقية', 
+          img: '212_VIP_black.png', 
+          category: 'men', 
+          longevity: 'طويل (6-8 ساعات)', 
+          suitableTimes: 'الخريف والشتاء - مناسب للحفلات المسائية', 
+          symbolsMeaning: '🍁: دافئ | 🌙: ليلي' 
+        },
+        { 
+          name: 'Acqua_di_Gio_Armani', 
+          desc: 'عطر رجالي منعش مستوحى من البحر - 61000 أوقية', 
+          img: 'Acqua_di_Gio_Armani.png', 
+          category: 'men', 
+          longevity: 'متوسط (4-6 ساعات)', 
+          suitableTimes: 'الربيع والصيف - مناسب للنهار', 
+          symbolsMeaning: '☂️: متعدد الاستخدام | 🌱: منعش | ☀️: نهاري' 
+        },
+        { 
+          name: 'La_Nuit_Trésor', 
+          desc: 'عطر نسائي رومانسي بنفحات الفانيليا - 58000 أوقية', 
+          img: 'La_Nuit_Tresor.png', 
+          category: 'women', 
+          longevity: 'طويل (6-8 ساعات)', 
+          suitableTimes: 'الشتاء والخريف - مناسب للمساء', 
+          symbolsMeaning: '🍁: دافئ | ❄️: قوي | 🌙: ليلي' 
+        },
+        { 
+          name: 'MY_WAY', 
+          desc: 'عطر نسائي أنيق بنكهات زهرية مشرقة - 58000 أوقية', 
+          img: 'MY_WAY.png', 
+          category: 'women', 
+          longevity: 'متوسط (5-7 ساعات)', 
+          suitableTimes: 'الربيع والصيف - مناسب للنهار', 
+          symbolsMeaning: '🌱: منعش | ☂️: متعدد الاستخدام | ☀️: نهاري' 
+        },
+        { 
+          name: 'Dolce_and_Gabbana_the_one', 
+          desc: 'عطر نسائي فاخر بنفحات شرقية دافئة - 57000 أوقية', 
+          img: 'Dolce_and_Gabbana_the_one.png', 
+          category: 'women', 
+          longevity: 'طويل (6-8 ساعات)', 
+          suitableTimes: 'الشتاء والخريف - مناسب للمساء', 
+          symbolsMeaning: '🍁: دافئ | ❄️: قوي | 🌙: ليلي' 
+        },
+        { 
+          name: 'You_Intensely', 
+          desc: 'عطر نسائي قوي بنكهات فاكهية جذابة - 54000 أوقية', 
+          img: 'You_Intensely.png', 
+          category: 'women', 
+          longevity: 'طويل (6-8 ساعات)', 
+          suitableTimes: 'الخريف والشتاء - مناسب للمساء', 
+          symbolsMeaning: '🍁: دافئ | ❄️: قوي | 🌙: ليلي' 
+        },
+        { 
+          name: 'Supremacy_Collectors_Edition', 
+          desc: 'عطر رجالي مميز بنفحات شرقية فاخرة - 38000 أوقية', 
+          img: 'Supremacy_Collector_s_Edition.png', 
+          category: 'men', 
+          longevity: 'طويل جدًا (8-12 ساعة)', 
+          suitableTimes: 'الشتاء والخريف - مناسب للمساء', 
+          symbolsMeaning: '🍁: دافئ | ❄️: قوي | 🌙: ليلي' 
+        },
+        { 
+          name: 'Hawas_Black_Rasasi', 
+          desc: 'عطر رجالي قوي بنكهات خشبية منعشة - 38000 أوقية', 
+          img: 'Hawas_Black_Rasasi.png', 
+          category: 'men', 
+          longevity: 'طويل (6-8 ساعات)', 
+          suitableTimes: 'جميع الفصول - مناسب للنهار والمساء', 
+          symbolsMeaning: '🌱: منعش | ☂️: متعدد الاستخدام | ☀️: نهاري' 
+        },
+        { 
+          name: 'Club_de_Nuit_Intense_Man_200ml', 
+          desc: 'عطر رجالي مكثف بنفحات فاكهية وعنبرية - 35000 أوقية', 
+          img: 'Club_de_Nuit_Intense_Man_200ml.png', 
+          category: 'men', 
+          longevity: 'طويل جدًا (8-10 ساعات)', 
+          suitableTimes: 'الربيع والصيف - مناسب للنهار', 
+          symbolsMeaning: '☂️: متعدد الاستخدام | ☀️: نهاري' 
+        },
+        { 
+          name: 'Supremacy_Not_Only_Intense', 
+          desc: 'عطر رجالي عصري بنكهات قوية ومنعشة - 29000 أوقية', 
+          img: 'Supremacy_Not_Only_Intense.png', 
+          category: 'men', 
+          longevity: 'طويل (6-8 ساعات)', 
+          suitableTimes: 'الربيع والصيف - مناسب للنهار', 
+          symbolsMeaning: '☂️: متعدد الاستخدام | 🌱: منعش | ☀️: نهاري' 
+        },
+        { 
+          name: 'Oud_lavender', 
+          desc: 'عطر شرقي مميز يمزج العود واللافندر - 26000 أوقية', 
+          img: 'Oud_lavender.png', 
+          category: 'unisex', 
+          longevity: 'طويل جدًا (8-12 ساعة)', 
+          suitableTimes: 'الشتاء والخريف - مناسب للمساء', 
+          symbolsMeaning: '🍁: دافئ | ❄️: قوي | 🌙: ليلي' 
+        },
+        { 
+          name: '9PM_rebel', 
+          desc: 'عطر شبابي مفعم بالحيوية بنكهات جريئة - 25000 أوقية', 
+          img: '9PM_Rebel.png', 
+          category: 'men', 
+          longevity: 'طويل (6-8 ساعات)', 
+          suitableTimes: 'الخريف والشتاء - مناسب للمساء', 
+          symbolsMeaning: '🍁: دافئ | 🌙: ليلي' 
+        },
+        { 
+          name: 'Liquid_Brun', 
+          desc: 'عطر رجالي كلاسيكي بنفحات خشبية دافئة - 23000 أوقية', 
+          img: 'Liquid_Brun.png', 
+          category: 'men', 
+          longevity: 'طويل (6-8 ساعات)', 
+          suitableTimes: 'الشتاء والخريف - مناسب للمساء', 
+          symbolsMeaning: '🍁: دافئ | ❄️: قوي | 🌙: ليلي' 
+        },
+        { 
+          name: 'Odyssey_Spectra', 
+          desc: 'عطر منعش بنكهات مائية وفاكهية - 21000 أوقية', 
+          img: 'Odyssey_Spectra.png', 
+          category: 'unisex', 
+          longevity: 'متوسط (4-6 ساعات)', 
+          suitableTimes: 'الصيف - مناسب للنهار', 
+          symbolsMeaning: '☂️: متعدد الاستخدام | ☀️: نهاري' 
+        },
+        { 
+          name: 'hawas_elixir', 
+          desc: 'عطر رجالي منعش بنكهات حمضية قوية - 20000 أوقية', 
+          img: 'hawas_elixir.png', 
+          category: 'men', 
+          longevity: 'متوسط (4-6 ساعات)', 
+          suitableTimes: 'الصيف - مناسب للنهار', 
+          symbolsMeaning: '☂️: متعدد الاستخدام | ☀️: نهاري' 
+        },
+        { 
+          name: 'Club_De_Nuit_Urban_Elixir', 
+          desc: 'عطر شبابي عصري بنكهات منعشة - 19000 أوقية', 
+          img: 'Club_De_Nuit_Urban_Elixir.png', 
+          category: 'men', 
+          longevity: 'متوسط (4-6 ساعات)', 
+          suitableTimes: 'الربيع والصيف - مناسب للنهار', 
+          symbolsMeaning: '☂️: متعدد الاستخدام | 🌱: منعش | ☀️: نهاري' 
+        },
+        { 
+          name: '9am_Dive', 
+          desc: 'عطر منعش مستوحى من الصباح البارد - 19000 أوقية', 
+          img: '9am_Dive.png', 
+          category: 'unisex', 
+          longevity: 'متوسط (4-6 ساعات)', 
+          suitableTimes: 'الربيع والصيف - مناسب للنهار', 
+          symbolsMeaning: '☂️: متعدد الاستخدام | 🌱: منعش | ☀️: نهاري' 
+        },
+        { 
+          name: 'Turathi_Blue', 
+          desc: 'عطر شرقي منعش بنفحات بحرية - 19000 أوقية', 
+          img: 'Turathi_Blue.png', 
+          category: 'unisex', 
+          longevity: 'متوسط (4-6 ساعات)', 
+          suitableTimes: 'الصيف - مناسب للنهار', 
+          symbolsMeaning: '☂️: متعدد الاستخدام | ☀️: نهاري' 
+        },
+        { 
+          name: 'Hawas_for_Him', 
+          desc: 'عطر رجالي منعش بنكهات مائية وحمضية - 16000 أوقية', 
+          img: 'Hawas_for_Him.png', 
+          category: 'men', 
+          longevity: 'متوسط (4-6 ساعات)', 
+          suitableTimes: 'الصيف - مناسب للنهار', 
+          symbolsMeaning: '☂️: متعدد الاستخدام | ☀️: نهاري' 
+        },
+        { 
+          name: '9PM', 
+          desc: 'عطر شبابي جذاب بنكهات فاكهية دافئة - 16000 أوقية', 
+          img: '9PM.png', 
+          category: 'men', 
+          longevity: 'طويل (6-8 ساعات)', 
+          suitableTimes: 'الخريف والشتاء - مناسب للمساء', 
+          symbolsMeaning: '🍁: دافئ | 🌙: ليلي' 
+        },
+        { 
+          name: 'Hawas_Ice_for_Him', 
+          desc: 'عطر رجالي منعش بنكهات جليدية - 16000 أوقية', 
+          img: 'Hawas_Ice_for_Him.png', 
+          category: 'men', 
+          longevity: 'متوسط (4-6 ساعات)', 
+          suitableTimes: 'الصيف - مناسب للنهار', 
+          symbolsMeaning: '☂️: متعدد الاستخدام | ☀️: نهاري' 
+        },
+        { 
+          name: 'Confidential', 
+          desc: 'عطر أنيق بنفحات غامضة وفاخرة - 15000 أوقية', 
+          img: 'Confidential.png', 
+          category: 'unisex', 
+          longevity: 'طويل (6-8 ساعات)', 
+          suitableTimes: 'الشتاء والخريف - مناسب للمساء', 
+          symbolsMeaning: '🍁: دافئ | ❄️: قوي | 🌙: ليلي' 
+        },
+        { 
+          name: 'Al_Wisam', 
+          desc: 'عطر شرقي كلاسيكي بنكهات دافئة - 15000 أوقية', 
+          img: 'Al_Wisam.png', 
+          category: 'unisex', 
+          longevity: 'طويل (6-8 ساعات)', 
+          suitableTimes: 'الشتاء والخريف - مناسب للمساء', 
+          symbolsMeaning: '🍁: دافئ | ❄️: قوي | 🌙: ليلي' 
+        }
       ],
       symbols: {
         'moosouf': '🍁❄️🌙',
         'jean paul gaultier le male elixir': '🍁❄️🌙',
         'Dior sauvage': '🌱☂️☀️',
         'officer': '🌱🍁☀️',
-        'jean_paul_gaultier_paradise': '☂️🌱☀️',
+        'la_belle_paradise_garden': '☂️🌱☀️',
         'tom_ford_noir': '🍁❄️🌙',
         '212_VIP_black': '🍁🌙',
         'Acqua_di_Gio_Armani': '☂️🌱☀️',
@@ -338,6 +571,10 @@
       };
     }
 
+    function order(productName, size = '') {
+      window.location.href = `https://wa.me/22246099296?text=${encodeURIComponent(`مرحبا، أريد عطر ${decodeURIComponent(productName)} ${size}`)}`;
+    }
+
     // دالة لعرض المنتجات
     function displayProducts(filteredProducts = products) {
       productGrid.innerHTML = '<div class="loading">جاري التحميل...</div>';
@@ -351,125 +588,14 @@
         let matchedProducts = filteredProducts;
         let unmatchedProducts = products.filter(product => !matchedProducts.includes(product));
 
-        // إذا كان هناك بحث، أظهر النتائج المطابقة أولاً
         if (searchTerm || category !== 'all') {
-          // إخفاء العنوان الرئيسي
           mainTitle.style.display = 'none';
 
-          // عرض النتائج خارج الشبكة
           if (matchedProducts.length > 0) {
             resultsSection.innerHTML = '<h2 class="section-title">النتائج</h2>';
             productGrid.innerHTML = '';
             matchedProducts.forEach((product, index) => {
               const html = `
                 <div class="product">
-                  <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
-                  <div class="symbols">${productSymbols[product.name] || ''}</div>
-                  <h3>${product.name.replace(/_/g, ' ')}</h3>
-                  <p>${product.desc}</p>
-                  <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, 'كامل', ${index})" aria-label="اطلب عطر ${product.name} بحجم كامل">اطلب الآن</button>
-                  <div class="size-options">
-                    <button class="size-btn selected" onclick="selectSize(this, 'كامل', ${index})" aria-label="اختر حجم كامل لعطر ${product.name}">كامل</button>
-                    <button class="size-btn" onclick="selectSize(this, '10 مل', ${index})" aria-label="اختر حجم 10 مل لعطر ${product.name}">10 مل</button>
-                  </div>
-                </div>
-              `;
-              productGrid.insertAdjacentHTML('beforeend', html);
-            });
-          } else {
-            resultsSection.innerHTML = '<p class="no-results">لا توجد منتجات مطابقة لبحثك</p>';
-          }
-
-          // إظهار باقي العطور تحت عنوان "عطورنا المختارة" خارج الشبكة
-          if (unmatchedProducts.length > 0) {
-            remainingSection.innerHTML = '<h2 class="section-title">عطورنا المختارة</h2>';
-            const remainingGrid = document.createElement('div');
-            remainingGrid.className = 'product-grid';
-            unmatchedProducts.forEach((product, index) => {
-              const html = `
-                <div class="product">
-                  <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
-                  <div class="symbols">${productSymbols[product.name] || ''}</div>
-                  <h3>${product.name.replace(/_/g, ' ')}</h3>
-                  <p>${product.desc}</p>
-                  <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, 'كامل', ${index})" aria-label="اطلب عطر ${product.name} بحجم كامل">اطلب الآن</button>
-                  <div class="size-options">
-                    <button class="size-btn selected" onclick="selectSize(this, 'كامل', ${index})" aria-label="اختر حجم كامل لعطر ${product.name}">كامل</button>
-                    <button class="size-btn" onclick="selectSize(this, '10 مل', ${index})" aria-label="اختر حجم 10 مل لعطر ${product.name}">10 مل</button>
-                  </div>
-                </div>
-              `;
-              remainingGrid.insertAdjacentHTML('beforeend', html);
-            });
-            remainingSection.appendChild(remainingGrid);
-          }
-        } else {
-          // إذا لم يكن هناك بحث، اعرض كل المنتجات تحت العنوان الرئيسي
-          mainTitle.style.display = 'block';
-          productGrid.innerHTML = '';
-          filteredProducts.forEach((product, index) => {
-            const html = `
-              <div class="product">
-                <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
-                <div class="symbols">${productSymbols[product.name] || ''}</div>
-                <h3>${product.name.replace(/_/g, ' ')}</h3>
-                <p>${product.desc}</p>
-                <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, 'كامل', ${index})" aria-label="اطلب عطر ${product.name} بحجم كامل">اطلب الآن</button>
-                <div class="size-options">
-                  <button class="size-btn selected" onclick="selectSize(this, 'كامل', ${index})" aria-label="اختر حجم كامل لعطر ${product.name}">كامل</button>
-                  <button class="size-btn" onclick="selectSize(this, '10 مل', ${index})" aria-label="اختر حجم 10 مل لعطر ${product.name}">10 مل</button>
-                </div>
-              </div>
-            `;
-            productGrid.insertAdjacentHTML('beforeend', html);
-          });
-        }
-      }, 500);
-    }
-
-    // دالة لتحديد الحجم
-    function selectSize(button, size, index) {
-      const buttons = document.querySelectorAll(`#product-grid .product:nth-child(${index + 1}) .size-btn`);
-      buttons.forEach(btn => btn.classList.remove('selected'));
-      button.classList.add('selected');
-      const orderButton = document.querySelector(`#product-grid .product:nth-child(${index + 1}) .order-btn`);
-      orderButton.setAttribute('onclick', `order('${encodeURIComponent(products[index].name)}', this, '${size}', ${index})`);
-      orderButton.setAttribute('aria-label', `اطلب عطر ${products[index].name} بحجم ${size}`);
-    }
-
-    // دالة تصفية المنتجات
-    function filterProducts() {
-      const searchTerm = searchInput.value.toLowerCase();
-      const category = categoryFilter.value;
-      let filteredProducts = products;
-
-      // تصفية حسب النص
-      if (searchTerm) {
-        filteredProducts = filteredProducts.filter(product =>
-          product.name.toLowerCase().includes(searchTerm) ||
-          product.desc.toLowerCase().includes(searchTerm)
-        );
-      }
-
-      // تصفية حسب الفئة
-      if (category !== 'all') {
-        filteredProducts = filteredProducts.filter(product => product.category === category);
-      }
-
-      displayProducts(filteredProducts);
-    }
-
-    // دالة الطلب عبر واتساب
-    function order(productName, button, size, index) {
-      window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)} بحجم ${size}`;
-    }
-
-    // عرض المنتجات عند تحميل الصفحة
-    displayProducts();
-
-    // إضافة مستمعات الأحداث مع debounce
-    searchInput.addEventListener('input', debounce(filterProducts, 300));
-    categoryFilter.addEventListener('change', filterProducts);
-  </script>
-</body>
-</html>
+                  <a href="perfume-details.html?name=${encodeURIComponent(product.name)}">
+                    <img src="${product.img}" alt="${product.name}" loading="lazy" onerror
