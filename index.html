@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>👑مملكة العطور | Perfume Kingdom 👑</title>
+  <title>🖤👑✨ مملكة العطور | Perfume Kingdom 🖤👑✨</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
@@ -77,6 +77,53 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 2rem;
       margin-top: 2rem;
+      background: #fff; /* خلفية بيضاء */
+      position: relative;
+      border-radius: 12px;
+      padding: 1rem;
+      overflow: hidden;
+    }
+    /* تأثير نفحات العطر والرمال الذهبية */
+    .product-grid::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        45deg,
+        rgba(0, 191, 255, 0.2),
+        rgba(255, 99, 71, 0.2),
+        rgba(218, 165, 32, 0.2)
+      ); /* خطوط ملونة كنفحات عطر */
+      animation: perfumeFlow 8s linear infinite;
+      z-index: -1;
+    }
+    .product-grid::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 30%;
+      background: linear-gradient(
+        to right,
+        rgba(218, 165, 32, 0.3),
+        rgba(184, 134, 11, 0.3)
+      ); /* رمال ذهبية */
+      animation: sandFlow 10s linear infinite;
+      z-index: -1;
+    }
+    @keyframes perfumeFlow {
+      0% { transform: translateY(0) skew(0deg); }
+      50% { transform: translateY(-20px) skew(10deg); }
+      100% { transform: translateY(0) skew(0deg); }
+    }
+    @keyframes sandFlow {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(50px); }
+      100% { transform: translateX(0); }
     }
     .product {
       background: white;
@@ -211,7 +258,7 @@
 </head>
 <body>
   <header>
-    <h1>👑 مملكة العطور <br> Perfume Kingdom 👑</h1>
+    <h1>🖤👑✨ مملكة العطور <br> Perfume Kingdom 🖤👑✨</h1>
     <p>توصيل مجاني لجميع أنحاء موريتانيا <br> الدفع عند الاستلام في نواكشوط</p>
   </header>
   <div class="container">
@@ -382,23 +429,6 @@
     function order(productName, button, size, index) {
       window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)} بحجم ${size}`;
     }
-
-    // تحميل البيانات (يمكن استبدالها بـ fetch من ملف JSON)
-    /*
-    async function loadProducts() {
-      try {
-        const response = await fetch('products.json');
-        const data = await response.json();
-        products = data.products;
-        productSymbols = data.symbols;
-        displayProducts();
-      } catch (error) {
-        console.error('Error loading products:', error);
-        productGrid.innerHTML = '<p class="no-results">حدث خطأ أثناء تحميل المنتجات</p>';
-      }
-    }
-    loadProducts();
-    */
 
     // عرض المنتجات عند تحميل الصفحة
     displayProducts();
