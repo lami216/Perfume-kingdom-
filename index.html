@@ -97,7 +97,7 @@
       height: 250px;
       object-fit: cover;
       border-radius: 8px;
-      cursor: pointer; /* مؤشر يدوي عند التمرير */
+      cursor: pointer;
     }
     .product h3 {
       font-size: 1.4rem;
@@ -584,7 +584,6 @@
         let matchedProducts = filteredProducts;
         let unmatchedProducts = products.filter(product => !matchedProducts.includes(product));
 
-        // إذا كان هناك بحث، أظهر النتائج المطابقة أولاً
         if (searchTerm || category !== 'all') {
           mainTitle.style.display = 'none';
 
@@ -595,6 +594,7 @@
               const html = `
                 <div class="product">
                   <a href="perfume-details.html?name=${encodeURIComponent(product.name)}">
-                    <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
+                    <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/250?text=عطر'">
                   </a>
-                  <div class="symbo
+                  <div class="symbols">${productSymbols[product.name] || ''}</div>
+                  
