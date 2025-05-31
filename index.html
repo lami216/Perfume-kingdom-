@@ -585,17 +585,17 @@
         const searchTerm = searchInput.value.toLowerCase();
         const category = categoryFilter.value;
 
-        let matchedProducts = filteredProducts;
-        let unmatchedProducts = products.filter(product => !matchedProducts.includes(product));
+        // تصفية المنتجات بناءً على البحث والفئة
+        let matchedProducts = filteredProducts.filter(product => {
+          const matchesSearch = !searchTerm || (product.name.toLowerCase().includes(searchTerm) || product.desc.toLowerCase().includes(searchTerm));
+          const matchesCategory = category === 'all' || product.category === category;
+          return matchesSearch && matchesCategory;
+        });
 
-        if (searchTerm || category !== 'all') {
-          mainTitle.style.display = 'none';
-
-          if (matchedProducts.length > 0) {
+        if (matchedProducts.length > 0) {
+          if (searchTerm || category !== 'all') {
             resultsSection.innerHTML = '<h2 class="section-title">النتائج</h2>';
-            productGrid.innerHTML = '';
-            matchedProducts.forEach((product, index) => {
-              const html = `
-                <div class="product">
-                  <a href="perfume-details.html?name=${encodeURIComponent(product.name)}">
-                    <img src="${product.img}" alt="${product.name}" loading="lazy" onerror
+            mainTitle.style.display = 'none';
+          } else {
+            mainTitle.style.display = 'block';
+        
