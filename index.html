@@ -179,7 +179,7 @@
     }
     @media (max-width: 768px) {
       .product-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        grid-template-columns: repeat(3, 1fr); /* تغيير إلى 3 أعمدة في الوضع الأفقي */
         gap: 1rem;
       }
       .product {
@@ -224,6 +224,19 @@
         padding: 0.25rem 0.5rem;
         font-size: 0.75rem;
       }
+      /* في الوضع الرأسي نعود لعرض عمودين */
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    /* استعلام جديد للهواتف في الوضع الأفقي */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .product img {
+        max-height: 150px;
+      }
     }
   </style>
 </head>
@@ -250,7 +263,7 @@
     <div id="remaining-section"></div>
   </div>
   <script>
-    // بيانات المنتجات (يمكن نقلها إلى ملف JSON خارجي)
+    // بيانات المنتجات المعدلة حسب طلبك
     const productsData = {
       products: [
         { name: 'moosouf', desc: 'عطر رجالي شرقي فاخر يدوم طويلاً - 5000 أوقية', img: 'Moosouf.png', category: 'men' },
@@ -304,7 +317,7 @@
         { name: 'Ameerat Al Arab', desc: 'عطر نسائي فاخر - 7000 أوقية', img: 'Ameerat Al Arab.png', category: 'women' },
         { name: 'Ana Abiyedh', desc: 'عطر مختلط برائحة المسك - 7000 أوقية', img: 'Ana Abiyedh.png', category: 'unisex' },
         { name: 'Sayaad Al Quloob', desc: 'عطر رجالي جذاب - 7000 أوقية', img: 'Sayaad Al Quloob.png', category: 'men' },
-        { name: 'Box Musoof', desc: 'مجموعة عطور متنوعة - 10000 أوقية', img: 'Box Musoof.png', category: 'unisex' }, 
+        { name: 'Box Musoof', desc: 'مجموعة عطور متنوعة - 7000 أوقية', img: 'Box Musoof.png', category: 'unisex' }, 
         { name: 'Al_Wisam', desc: 'عطر شرقي كلاسيكي بنكهات دافئة - 15000 أوقية', img: 'Al_Wisam.png', category: 'unisex' },
         ],
       symbols: {
@@ -374,6 +387,17 @@
     const remainingSection = document.getElementById('remaining-section');
     const mainTitle = document.getElementById('main-title');
 
+    // دالة لاستخراج السعر من الوصف
+    function getPrice(desc) {
+      const priceMatch = desc.match(/(\d+)\s*أوقية/);
+      return priceMatch ? parseInt(priceMatch[1]) : 0;
+    }
+
+    // دالة لتحديد ما إذا كان يجب عرض خيارات الحجم
+    function shouldShowSizeOptions(price) {
+      return price > 10000; // تغيير من >= إلى > لإزالة الخيار عند 10000 بالضبط
+    }
+
     // دالة debounce لتقليل استدعاءات البحث
     function debounce(func, wait) {
       let timeout;
@@ -410,17 +434,22 @@
             resultsSection.innerHTML = '<h2 class="section-title">النتائج</h2>';
             productGrid.innerHTML = '';
             matchedProducts.forEach((product, index) => {
+              const price = getPrice(product.desc);
+              const showSizeOptions = shouldShowSizeOptions(price);
+              
               const html = `
                 <div class="product">
                   <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
                   <div class="symbols">${productSymbols[product.name] || ''}</div>
                   <h3>${product.name.replace(/_/g, ' ')}</h3>
                   <p>${product.desc}</p>
-                  <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, 'كامل', ${index})" aria-label="اطلب عطر ${product.name} بحجم كامل">اطلب الآن</button>
+                  <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, '${showSizeOptions ? 'كامل' : ''}', ${index})" aria-label="اطلب عطر ${product.name}${showSizeOptions ? ' بحجم كامل' : ''}">اطلب الآن</button>
+                  ${showSizeOptions ? `
                   <div class="size-options">
                     <button class="size-btn selected" onclick="selectSize(this, 'كامل', ${index})" aria-label="اختر حجم كامل لعطر ${product.name}">كامل</button>
                     <button class="size-btn" onclick="selectSize(this, '10 مل', ${index})" aria-label="اختر حجم 10 مل لعطر ${product.name}">10 مل</button>
                   </div>
+                  ` : ''}
                 </div>
               `;
               productGrid.insertAdjacentHTML('beforeend', html);
@@ -435,17 +464,22 @@
             const remainingGrid = document.createElement('div');
             remainingGrid.className = 'product-grid';
             unmatchedProducts.forEach((product, index) => {
+              const price = getPrice(product.desc);
+              const showSizeOptions = shouldShowSizeOptions(price);
+              
               const html = `
                 <div class="product">
                   <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
                   <div class="symbols">${productSymbols[product.name] || ''}</div>
                   <h3>${product.name.replace(/_/g, ' ')}</h3>
                   <p>${product.desc}</p>
-                  <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, 'كامل', ${index})" aria-label="اطلب عطر ${product.name} بحجم كامل">اطلب الآن</button>
+                  <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, '${showSizeOptions ? 'كامل' : ''}', ${index})" aria-label="اطلب عطر ${product.name}${showSizeOptions ? ' بحجم كامل' : ''}">اطلب الآن</button>
+                  ${showSizeOptions ? `
                   <div class="size-options">
                     <button class="size-btn selected" onclick="selectSize(this, 'كامل', ${index})" aria-label="اختر حجم كامل لعطر ${product.name}">كامل</button>
                     <button class="size-btn" onclick="selectSize(this, '10 مل', ${index})" aria-label="اختر حجم 10 مل لعطر ${product.name}">10 مل</button>
                   </div>
+                  ` : ''}
                 </div>
               `;
               remainingGrid.insertAdjacentHTML('beforeend', html);
@@ -457,17 +491,22 @@
           mainTitle.style.display = 'block';
           productGrid.innerHTML = '';
           filteredProducts.forEach((product, index) => {
+            const price = getPrice(product.desc);
+            const showSizeOptions = shouldShowSizeOptions(price);
+            
             const html = `
               <div class="product">
                 <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
                 <div class="symbols">${productSymbols[product.name] || ''}</div>
                 <h3>${product.name.replace(/_/g, ' ')}</h3>
                 <p>${product.desc}</p>
-                <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, 'كامل', ${index})" aria-label="اطلب عطر ${product.name} بحجم كامل">اطلب الآن</button>
+                <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, '${showSizeOptions ? 'كامل' : ''}', ${index})" aria-label="اطلب عطر ${product.name}${showSizeOptions ? ' بحجم كامل' : ''}">اطلب الآن</button>
+                ${showSizeOptions ? `
                 <div class="size-options">
                   <button class="size-btn selected" onclick="selectSize(this, 'كامل', ${index})" aria-label="اختر حجم كامل لعطر ${product.name}">كامل</button>
                   <button class="size-btn" onclick="selectSize(this, '10 مل', ${index})" aria-label="اختر حجم 10 مل لعطر ${product.name}">10 مل</button>
                 </div>
+                ` : ''}
               </div>
             `;
             productGrid.insertAdjacentHTML('beforeend', html);
@@ -510,7 +549,7 @@
 
     // دالة الطلب عبر واتساب
     function order(productName, button, size, index) {
-      window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)} بحجم ${size}`;
+      window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}${size ? ' بحجم ' + size : ''}`;
     }
 
     // عرض المنتجات عند تحميل الصفحة
