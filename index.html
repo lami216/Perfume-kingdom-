@@ -350,7 +350,7 @@
         'Bade\'e Al Oud': '🍁❄️🌙',
         'Mayar': '🌱☀️',
         'Gissah': '🍁❄️🌙',
-        'Asad Zinzibar': '🍁❄️🌙',
+        'Asad Zanzibar': '🍁❄️🌙',
         'Saif Al Batal': '🍁❄️🌙',
         'EL GHAWAS': '🌱☀️',
         'Fakhar Lattafa Gold': '🍁❄️🌙',
@@ -360,9 +360,10 @@
         'Ameerat Al Arab': '🍁❄️🌙',
         'Ana Abiyedh': '🌱☀️',
         'Sayaad Al Quloob': '🍁❄️🌙',
-        'Box Musoof': '🍁❄️🌙',   
-        }
-        };
+        'Box Musoof': '🍁❄️🌙',
+    
+      }
+    };
 
     let products = productsData.products;
     let productSymbols = productsData.symbols;
@@ -458,4 +459,66 @@
           filteredProducts.forEach((product, index) => {
             const html = `
               <div class="product">
-                <
+                <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
+                <div class="symbols">${productSymbols[product.name] || ''}</div>
+                <h3>${product.name.replace(/_/g, ' ')}</h3>
+                <p>${product.desc}</p>
+                <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, 'كامل', ${index})" aria-label="اطلب عطر ${product.name} بحجم كامل">اطلب الآن</button>
+                <div class="size-options">
+                  <button class="size-btn selected" onclick="selectSize(this, 'كامل', ${index})" aria-label="اختر حجم كامل لعطر ${product.name}">كامل</button>
+                  <button class="size-btn" onclick="selectSize(this, '10 مل', ${index})" aria-label="اختر حجم 10 مل لعطر ${product.name}">10 مل</button>
+                </div>
+              </div>
+            `;
+            productGrid.insertAdjacentHTML('beforeend', html);
+          });
+        }
+      }, 500);
+    }
+
+    // دالة لتحديد الحجم
+    function selectSize(button, size, index) {
+      const buttons = document.querySelectorAll(`#product-grid .product:nth-child(${index + 1}) .size-btn`);
+      buttons.forEach(btn => btn.classList.remove('selected'));
+      button.classList.add('selected');
+      const orderButton = document.querySelector(`#product-grid .product:nth-child(${index + 1}) .order-btn`);
+      orderButton.setAttribute('onclick', `order('${encodeURIComponent(products[index].name)}', this, '${size}', ${index})`);
+      orderButton.setAttribute('aria-label', `اطلب عطر ${products[index].name} بحجم ${size}`);
+    }
+
+    // دالة تصفية المنتجات
+    function filterProducts() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const category = categoryFilter.value;
+      let filteredProducts = products;
+
+      // تصفية حسب النص
+      if (searchTerm) {
+        filteredProducts = filteredProducts.filter(product =>
+          product.name.toLowerCase().includes(searchTerm) ||
+          product.desc.toLowerCase().includes(searchTerm)
+        );
+      }
+
+      // تصفية حسب الفئة
+      if (category !== 'all') {
+        filteredProducts = filteredProducts.filter(product => product.category === category);
+      }
+
+      displayProducts(filteredProducts);
+    }
+
+    // دالة الطلب عبر واتساب
+    function order(productName, button, size, index) {
+      window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)} بحجم ${size}`;
+    }
+
+    // عرض المنتجات عند تحميل الصفحة
+    displayProducts();
+
+    // إضافة مستمعات الأحداث مع debounce
+    searchInput.addEventListener('input', debounce(filterProducts, 300));
+    categoryFilter.addEventListener('change', filterProducts);
+  </script>
+</body>
+</html>
