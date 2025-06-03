@@ -46,6 +46,7 @@
       display: flex;
       gap: 15px;
       align-items: center;
+      order: -1;
     }
     .search-icon, .filter-icon {
       cursor: pointer;
@@ -56,12 +57,13 @@
       display: none;
       position: absolute;
       top: 100%;
-      right: 20px;
+      left: 20px;
       background: white;
       padding: 10px;
       border-radius: 5px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       z-index: 100;
+      width: 200px;
     }
     .filter-menu.show {
       display: block;
@@ -71,6 +73,7 @@
       padding: 8px;
       border: 1px solid #ddd;
       border-radius: 4px;
+      margin-bottom: 10px;
     }
     
     /* Search Bar Styles */
@@ -90,6 +93,32 @@
       border: 1px solid #ccc;
       border-radius: 5px;
       font-size: 16px;
+    }
+    
+    /* Featured Slider */
+    .featured-slider {
+      background: linear-gradient(135deg, #f8f0e0, #fff9f0);
+      padding: 1rem;
+      margin: 1rem auto;
+      max-width: 1200px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .slider-container {
+      display: flex;
+      overflow: hidden;
+      height: 300px;
+      position: relative;
+    }
+    
+    .slider-item {
+      min-width: 100%;
+      transition: transform 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 2rem;
     }
     
     /* Main Content Styles */
@@ -117,6 +146,7 @@
       flex-direction: column;
       justify-content: space-between;
       min-height: 400px;
+      position: relative;
     }
     .product img {
       max-width: 100%;
@@ -135,6 +165,11 @@
       font-size: 0.95rem;
       color: #666;
       margin-bottom: 1rem;
+    }
+    .product .price {
+      font-weight: bold;
+      color: #D4AF37;
+      font-size: 1.1rem;
     }
     .product button.order-btn {
       background: linear-gradient(to right, #d4af37, #b8860b);
@@ -203,6 +238,41 @@
       margin: 1.5rem 0;
     }
     
+    /* Scroll to Top Button */
+    .scroll-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #D4AF37;
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      font-size: 20px;
+    }
+    
+    /* WhatsApp Float Button */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      background: #25D366;
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 60px;
+      font-size: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+    
     /* Footer Styles */
     footer {
       background: linear-gradient(to right, #D4AF37, #FFD700);
@@ -238,35 +308,42 @@
     /* تعديلات للشاشات الصغيرة (مثل الهواتف في الوضع الطولي) */
     @media (max-width: 768px) {
       .product-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* عمود أو عمودين حسب العرض */
-        gap: 1rem; /* تقليل المسافة بين العناصر */
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
       }
       .product {
         padding: 1rem;
         min-height: auto;
       }
       .product img {
-        height: auto; /* إزالة الارتفاع الثابت */
-        aspect-ratio: 1 / 1; /* نسبة عرض إلى ارتفاع مربعة */
-        object-fit: contain; /* الصورة تظهر كاملة بدون تقطيع */
-        max-height: 200px; /* أقصى ارتفاع للصورة */
+        height: auto;
+        aspect-ratio: 1 / 1;
+        object-fit: contain;
+        max-height: 200px;
       }
       .product h3 {
-        font-size: 1.2rem; /* تصغير حجم الخط للعنوان */
+        font-size: 1.2rem;
       }
       .product p {
-        font-size: 0.9rem; /* تصغير حجم النص */
+        font-size: 0.9rem;
       }
       .product button.order-btn {
-        padding: 0.5rem 1rem; /* تصغير حجم الزر */
+        padding: 0.5rem 1rem;
         font-size: 0.9rem;
+      }
+      .slider-container {
+        height: 200px;
+      }
+      .slider-item {
+        flex-direction: column;
+        padding: 1rem;
       }
     }
 
     /* تعديلات إضافية للشاشات الصغيرة جدًا */
     @media (max-width: 480px) {
       .container {
-        padding: 1rem; /* تقليل الهوامش */
+        padding: 1rem;
       }
       .logo img {
         height: 30px;
@@ -278,32 +355,51 @@
         width: 40px;
         height: 40px;
       }
+      .filter-menu {
+        left: 10px;
+        width: 180px;
+      }
+      .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        font-size: 25px;
+      }
     }
   </style>
 </head>
 <body>
   <!-- Updated Header -->
   <div class="header">
-    <div class="logo">
-      <span>Perfume Kingdom</span>
-      <img src="logo.png" alt="Logo">
-      <span dir="rtl">مملكة العطور</span>
-    </div>
     <div class="header-icons">
       <div class="filter-icon" id="filterToggle">
         <i class="fas fa-bars"></i>
+        <div class="filter-menu" id="filterMenu">
+          <select id="mobileCategoryFilter">
+            <option value="all">جميع الأنواع</option>
+            <option value="men">رجالي</option>
+            <option value="women">نسائي</option>
+            <option value="unisex">مشترك</option>
+          </select>
+          <select id="priceFilter">
+            <option value="all">جميع الأسعار</option>
+            <option value="0-20000">0 - 20,000 أوقية</option>
+            <option value="20000-40000">20,000 - 40,000 أوقية</option>
+            <option value="40000-60000">40,000 - 60,000 أوقية</option>
+            <option value="60000-80000">60,000 - 80,000 أوقية</option>
+            <option value="80000-100000">80,000 - 100,000 أوقية</option>
+            <option value="100000+">أكثر من 100,000 أوقية</option>
+          </select>
+        </div>
       </div>
       <div class="search-icon" id="searchToggle">
         <i class="fas fa-search"></i>
       </div>
-      <div class="filter-menu" id="filterMenu">
-        <select id="mobileCategoryFilter">
-          <option value="all">جميع الأنواع</option>
-          <option value="men">رجالي</option>
-          <option value="women">نسائي</option>
-          <option value="unisex">مشترك</option>
-        </select>
-      </div>
+    </div>
+    <div class="logo">
+      <span>Perfume Kingdom</span>
+      <img src="logo.png" alt="Logo">
+      <span dir="rtl">مملكة العطور</span>
     </div>
   </div>
 
@@ -313,6 +409,11 @@
   </div>
 
   <div class="container">
+    <!-- Featured Slider -->
+    <div class="featured-slider">
+      <div class="slider-container" id="featuredSlider"></div>
+    </div>
+
     <h2 id="main-title">عطورنا المختارة</h2>
     <div id="results-section"></div>
     <div class="product-grid" id="product-grid">
@@ -321,6 +422,16 @@
     <div id="remaining-section"></div>
   </div>
   
+  <!-- Scroll to Top Button -->
+  <div class="scroll-to-top" id="scrollToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+  
+  <!-- WhatsApp Float Button -->
+  <a href="https://wa.me/22246099296" class="whatsapp-float">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
   <!-- Footer Section -->
   <footer>
     <h3>تواصل معنا</h3>
@@ -393,7 +504,7 @@
         { name: 'Sayaad Al Quloob', desc: 'صياد عطر رجالي جذاب - 7000 أوقية', img: 'Sayaad Al Quloob.png', category: 'men', price: 7000 },
         { name: 'moosouf', desc: 'موصوف عطر رجالي شرقي فاخر يدوم طويلاً - 5000 أوقية', img: 'Moosouf.png', category: 'men', price: 5000 },        
         ],
-         symbols: {
+      symbols: {
         'moosouf': '🍁❄️🌙',
         'jean paul gaultier le male elixir': '🍁❄️🌙',
         'Dior sauvage': '🌱☂️☀️',
@@ -447,7 +558,6 @@
         'Ana Abiyedh': '🌱☀️',
         'Sayaad Al Quloob': '🍁❄️🌙',
         'Box Musoof': '🍁❄️🌙',
-    
       }
     };
     
@@ -462,15 +572,10 @@
     const filterToggle = document.getElementById('filterToggle');
     const filterMenu = document.getElementById('filterMenu');
     const mobileCategoryFilter = document.getElementById('mobileCategoryFilter');
+    const priceFilter = document.getElementById('priceFilter');
     const searchContainer = document.getElementById('searchContainer');
-    const categoryFilter = document.createElement('select');
-    categoryFilter.id = 'categoryFilter';
-    categoryFilter.innerHTML = `
-      <option value="all">جميع الأنواع</option>
-      <option value="men">رجالي</option>
-      <option value="women">نسائي</option>
-      <option value="unisex">مشترك</option>
-    `;
+    const featuredSlider = document.getElementById('featuredSlider');
+    const scrollToTop = document.getElementById('scrollToTop');
 
     // إعداد السنة الحالية في الفوتر
     document.getElementById('current-year').textContent = new Date().getFullYear();
@@ -508,7 +613,11 @@
     // Mobile category filter
     mobileCategoryFilter.addEventListener('change', function() {
       filterProducts();
-      filterMenu.classList.remove('show');
+    });
+
+    // Price filter
+    priceFilter.addEventListener('change', function() {
+      filterProducts();
     });
 
     // البحث عند الكتابة مباشرة
@@ -570,13 +679,15 @@
     function renderProducts(productsArray, container) {
       productsArray.forEach((product, index) => {
         const showSizeOptions = product.price > 11000;
+        const priceText = product.desc.split(' - ')[1];
         
         const html = `
           <div class="product">
             <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
             <div class="symbols">${productSymbols[product.name] || ''}</div>
             <h3>${product.name.replace(/_/g, ' ')}</h3>
-            <p>${product.desc}</p>
+            <p>${product.desc.split(' - ')[0]}</p>
+            <p class="price">${priceText}</p>
             <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, '${showSizeOptions ? 'كامل' : ''}', ${index})">
               اطلب الآن
             </button>
@@ -605,6 +716,7 @@
     function filterProducts() {
       const searchTerm = searchInput.value.toLowerCase();
       const category = mobileCategoryFilter.value;
+      const priceRange = priceFilter.value;
       let filteredProducts = products;
 
       if (searchTerm) {
@@ -618,6 +730,16 @@
         filteredProducts = filteredProducts.filter(product => product.category === category);
       }
 
+      if (priceRange !== 'all') {
+        if (priceRange.endsWith('+')) {
+          const minPrice = parseInt(priceRange.replace('+', ''));
+          filteredProducts = filteredProducts.filter(product => product.price >= minPrice);
+        } else {
+          const [minPrice, maxPrice] = priceRange.split('-').map(Number);
+          filteredProducts = filteredProducts.filter(product => product.price >= minPrice && product.price <= maxPrice);
+        }
+      }
+
       displayProducts(filteredProducts);
     }
 
@@ -627,8 +749,51 @@
       window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}${sizeText}`;
     }
 
+    // عرض العروض العشوائية
+    function showRandomFeatured() {
+      const shuffled = [...products].sort(() => 0.5 - Math.random());
+      const featured = shuffled.slice(0, 3);
+      
+      featured.forEach(product => {
+        const item = document.createElement('div');
+        item.className = 'slider-item';
+        item.innerHTML = `
+          <img src="${product.img}" alt="${product.name}" style="height: 250px;">
+          <div>
+            <h3>${product.name.replace(/_/g, ' ')}</h3>
+            <p class="price">${product.desc.split(' - ')[1]}</p>
+            <button onclick="order('${product.name}')">اطلب الآن</button>
+          </div>
+        `;
+        featuredSlider.appendChild(item);
+      });
+      
+      let current = 0;
+      setInterval(() => {
+        current = (current + 1) % featured.length;
+        featuredSlider.style.transform = `translateX(-${current * 100}%)`;
+      }, 3000);
+    }
+
+    // زر العودة للأعلى
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        scrollToTop.style.display = 'flex';
+      } else {
+        scrollToTop.style.display = 'none';
+      }
+    });
+
+    scrollToTop.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
     // عرض المنتجات عند تحميل الصفحة
     displayProducts();
+    showRandomFeatured();
   </script>
 </body>
 </html>
