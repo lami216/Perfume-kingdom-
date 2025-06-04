@@ -17,7 +17,7 @@
       overflow-x: hidden;
     }
     
-    /* Header Styles - Updated */
+    /* Header Styles */
     .header {
       display: flex;
       justify-content: space-between;
@@ -374,7 +374,7 @@
       font-size: 0.9rem;
     }
     
-    /* تعديلات للشاشات الصغيرة (مثل الهواتف في الوضع الطولي) */
+    /* Responsive Styles */
     @media (max-width: 768px) {
       .product-grid {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -414,7 +414,6 @@
       }
     }
 
-    /* تعديلات إضافية للشاشات الصغيرة جدًا */
     @media (max-width: 480px) {
       .container {
         padding: 1rem;
@@ -443,7 +442,7 @@
   </style>
 </head>
 <body>
-  <!-- Updated Header -->
+  <!-- Header -->
   <div class="header">
     <div class="header-icons">
       <div class="filter-icon" id="filterToggle">
@@ -528,7 +527,7 @@
   <script>
     // بيانات المنتجات
     const productsData = {
-    	products: [
+      products: [
         { name: 'jean paul gaultier le male elixir', desc: 'عطر شبابي عصري بنفحات حارة - 100000 أوقية', img: 'jean_paul_gaultier_le_male_elixir.png', category: 'men', price: 100000 },
         { name: 'Dior sauvage', desc: 'أحد أشهر العطور الرجالية حول العالم - 100000 أوقية', img: 'Dior_sauvage_200ml.png', category: 'men', price: 100000 },
         { name: 'officer', desc: 'عطر رسمي أنيق يلائم جميع المناسبات - 15000 أوقية', img: 'officer.png', category: 'men', price: 15000 },
@@ -834,40 +833,64 @@
     // دالة عرض العروض العشوائية (محدثة)
     let currentSlide = 0;
     let slideInterval;
-    const featuredProducts = [];
+    let featuredGroups = [];
     
     function initSlider() {
-      // اختيار 3 عطور عشوائية
+      // إنشاء مجموعات من 3 عطور بشكل عشوائي
       const shuffled = [...products].sort(() => 0.5 - Math.random());
-      featuredProducts.length = 0;
-      featuredProducts.push(...shuffled.slice(0, 3));
+      featuredGroups = [];
+      
+      // تقسيم العطور إلى مجموعات كل مجموعة تحتوي على 3 عطور
+      for (let i = 0; i < shuffled.length; i += 3) {
+        const group = shuffled.slice(i, i + 3);
+        if (group.length === 3) {
+          featuredGroups.push(group);
+        }
+      }
+      
+      // إذا لم يكن هناك مجموعات كاملة (عدد العطور ليس مضاعف لـ 3)
+      if (featuredGroups.length === 0 && shuffled.length > 0) {
+        featuredGroups.push(shuffled);
+      }
       
       // تنظيف السلايدر أولاً
       featuredSlider.innerHTML = '';
       sliderDots.innerHTML = '';
       
-      // إنشاء الشرائح
-      featuredProducts.forEach((product, index) => {
-        // إضافة الشريحة
+      // إنشاء الشرائح لكل مجموعة
+      featuredGroups.forEach((group, groupIndex) => {
         const slide = document.createElement('div');
         slide.className = 'slider-item';
+        
+        let productsHTML = '';
+        group.forEach(product => {
+          productsHTML += `
+            <div class="slider-product">
+              <div class="slider-product-image">
+                <img src="${product.img}" alt="${product.name}" loading="lazy">
+              </div>
+              <div class="slider-product-content">
+                <h3>${product.name.replace(/_/g, ' ')}</h3>
+                <p>${product.desc.split(' - ')[0]}</p>
+                <p class="price">${product.desc.split(' - ')[1]}</p>
+                <button class="order-btn" onclick="order('${product.name}')">اطلب الآن</button>
+              </div>
+            </div>
+          `;
+        });
+        
         slide.innerHTML = `
-          <div class="slider-content">
-            <h2>${product.name.replace(/_/g, ' ')}</h2>
-            <p>${product.desc.split(' - ')[0]}</p>
-            <p class="price">${product.desc.split(' - ')[1]}</p>
-            <button class="order-btn" onclick="order('${product.name}')">اطلب الآن</button>
-          </div>
-          <div class="slider-image">
-            <img src="${product.img}" alt="${product.name}" loading="lazy">
+          <div class="slider-group">
+            ${productsHTML}
           </div>
         `;
+        
         featuredSlider.appendChild(slide);
         
         // إضافة النقاط
         const dot = document.createElement('div');
         dot.className = 'slider-dot';
-        dot.dataset.index = index;
+        dot.dataset.index = groupIndex;
         sliderDots.appendChild(dot);
       });
       
@@ -882,17 +905,21 @@
       clearInterval(slideInterval);
       slideInterval = setInterval(() => {
         nextSlide();
-      }, 3000);
+      }, 5000); // تغيير الشريحة كل 5 ثواني
     }
     
     function nextSlide() {
-      currentSlide = (currentSlide + 1) % featuredProducts.length;
+      if (featuredGroups.length === 0) return;
+      
+      currentSlide = (currentSlide + 1) % featuredGroups.length;
       featuredSlider.style.transform = `translateX(-${currentSlide * 100}%)`;
       updateDots();
     }
     
     function prevSlide() {
-      currentSlide = (currentSlide - 1 + featuredProducts.length) % featuredProducts.length;
+      if (featuredGroups.length === 0) return;
+      
+      currentSlide = (currentSlide - 1 + featuredGroups.length) % featuredGroups.length;
       featuredSlider.style.transform = `translateX(-${currentSlide * 100}%)`;
       updateDots();
     }
