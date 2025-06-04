@@ -771,80 +771,87 @@ function order(productName, button, size, index) {
   const sizeText = size ? ` بحجم ${size}` : '';
   window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}${sizeText}`;
 }
-
     // دالة لعرض المنتجات في السلايدر
-    function displaySliderProducts() {
-      featuredSlider.innerHTML = '';
-      
-      products.forEach((product, index) => {
-        const showSizeOptions = product.price > 11000;
-        const priceText = product.desc.split(' - ')[1];
-        
-        const slide = document.createElement('div');
-        slide.className = 'slider-item';
-        slide.innerHTML = `
-          <div class="product">
-            <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
-            <div class="symbols">${productSymbols[product.name] || ''}</div>
-            <h3>${product.name.replace(/_/g, ' ')}</h3>
-            <p>${product.desc.split(' - ')[0]}</p>
-            <p class="price">${priceText}</p>
-            <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, '${showSizeOptions ? 'كامل' : ''}', ${index})">
-              اطلب الآن
-            </button>
-            ${showSizeOptions ? `
-            <div class="size-options">
-              <button class="size-btn selected" onclick="selectSize(this, 'كامل', ${index})">كامل</button>
-              <button class="size-btn" onclick="selectSize(this, '10 مل', ${index})">10 مل</button>
-            </div>
-            ` : ''}
-          </div>
-        `;
-        featuredSlider.appendChild(slide);
-      });
-    }
+function displaySliderProducts() {
+  featuredSlider.innerHTML = '';
+  
+  // إنشاء عنصر واحد فقط للسلايدر
+  const slide = document.createElement('div');
+  slide.className = 'slider-item';
+  featuredSlider.appendChild(slide);
+  
+  updateCurrentSlide(); // عرض أول منتج
+}
 
-    // متغيرات السلايدر
-    let currentSlide = 0;
-    let slideInterval;
+// متغيرات السلايدر
+let currentSlideIndex = 0;
+let slideInterval;
 
-    // دالة لتحريك السلايدر
-    function goToSlide(index) {
-      currentSlide = (index + products.length) % products.length;
-      featuredSlider.style.transform = `translateX(-${currentSlide * 100}%)`;
-    }
+// دالة لتحديث الشريحة الحالية
+function updateCurrentSlide() {
+  const slide = document.querySelector('.slider-item');
+  const product = products[currentSlideIndex];
+  const showSizeOptions = product.price > 11000;
+  const priceText = product.desc.split(' - ')[1];
+  
+  slide.innerHTML = `
+    <div class="product">
+      <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
+      <div class="symbols">${productSymbols[product.name] || ''}</div>
+      <h3>${product.name.replace(/_/g, ' ')}</h3>
+      <p>${product.desc.split(' - ')[0]}</p>
+      <p class="price">${priceText}</p>
+      <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, '${showSizeOptions ? 'كامل' : ''}', ${currentSlideIndex})">
+        اطلب الآن
+      </button>
+      ${showSizeOptions ? `
+      <div class="size-options">
+        <button class="size-btn selected" onclick="selectSize(this, 'كامل', ${currentSlideIndex})">كامل</button>
+        <button class="size-btn" onclick="selectSize(this, '10 مل', ${currentSlideIndex})">10 مل</button>
+      </div>
+      ` : ''}
+    </div>
+  `;
+}
 
-    // دالة للشريحة التالية
-    function nextSlide() {
-      goToSlide(currentSlide + 1);
-    }
+// دالة للانتقال إلى شريحة معينة
+function goToSlide(index) {
+  currentSlideIndex = (index + products.length) % products.length;
+  updateCurrentSlide();
+}
 
-    // دالة للشريحة السابقة
-    function prevSlide() {
-      goToSlide(currentSlide - 1);
-    }
+// دالة للشريحة التالية
+function nextSlide() {
+  goToSlide(currentSlideIndex + 1);
+}
 
-    // بدء السلايدر التلقائي
-    function startSlider() {
-      clearInterval(slideInterval);
-      slideInterval = setInterval(nextSlide, 3000);
-    }
+// دالة للشريحة السابقة
+function prevSlide() {
+  goToSlide(currentSlideIndex - 1);
+}
 
-    // أحداث الأزرار
-    nextSlideBtn.addEventListener('click', () => {
-      nextSlide();
-      startSlider();
-    });
+// بدء السلايدر التلقائي
+function startSlider() {
+  clearInterval(slideInterval);
+  slideInterval = setInterval(nextSlide, 3000);
+}
 
-    prevSlideBtn.addEventListener('click', () => {
-      prevSlide();
-      startSlider();
-    });
+// أحداث الأزرار
+nextSlideBtn.addEventListener('click', () => {
+  nextSlide();
+  startSlider(); // إعادة التشغيل بعد النقر
+});
 
-    // عرض المنتجات عند تحميل الصفحة
-    displayProducts();
-    displaySliderProducts();
-    startSlider();
+prevSlideBtn.addEventListener('click', () => {
+  prevSlide();
+  startSlider(); // إعادة التشغيل بعد النقر
+});
+
+// عرض المنتجات عند تحميل الصفحة
+displayProducts();
+displaySliderProducts();
+startSlider();
+    
   </script>
 </body>
 </html>
