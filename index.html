@@ -94,33 +94,43 @@
       border-radius: 5px;
       font-size: 16px;
     }
-    
-    /* Featured Slider */
     .featured-slider {
-      background: linear-gradient(135deg, #f8f0e0, #fff9f0);
-      padding: 1rem;
-      margin: 1rem auto;
-      max-width: 1200px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
+    background: linear-gradient(135deg, #f8f0e0, #fff9f0);
+    padding: 1rem;
+    margin: 1rem auto;
+    max-width: 1200px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    direction: rtl; /* إضافة هذه السطر */
+  }
+  
+  .slider-container {
+    display: flex;
+    overflow: hidden;
+    height: 300px;
+    position: relative;
+    direction: rtl; /* إضافة هذه السطر */
+  }
+  
+  .slider-item {
+    min-width: 100%;
+    transition: transform 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 2rem;
+    flex-direction: row; /* تأكيد أن العناصر في صف واحد */
+  }
+
+  /* إضافة هذه القاعدة الجديدة */
+  .slider-item img {
+    max-height: 250px;
+    width: auto;
+    object-fit: contain;
+    margin-left: 2rem; /* تعديل المسافة بين الصورة والنص */
+  }
     
-    .slider-container {
-      display: flex;
-      overflow: hidden;
-      height: 300px;
-      position: relative;
-    }
-    
-    .slider-item {
-      min-width: 100%;
-      transition: transform 0.5s ease;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      padding: 0 2rem;
-    }
-    
+ 
     /* Main Content Styles */
     .container {
       max-width: 1200px;
@@ -504,7 +514,7 @@
         { name: 'Sayaad Al Quloob', desc: 'صياد عطر رجالي جذاب - 7000 أوقية', img: 'Sayaad Al Quloob.png', category: 'men', price: 7000 },
         { name: 'moosouf', desc: 'موصوف عطر رجالي شرقي فاخر يدوم طويلاً - 5000 أوقية', img: 'Moosouf.png', category: 'men', price: 5000 },        
         ],
-      symbols: {
+         symbols: {
         'moosouf': '🍁❄️🌙',
         'jean paul gaultier le male elixir': '🍁❄️🌙',
         'Dior sauvage': '🌱☂️☀️',
@@ -749,33 +759,36 @@
       window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}${sizeText}`;
     }
 
-    // عرض العروض العشوائية
-    function showRandomFeatured() {
-      const shuffled = [...products].sort(() => 0.5 - Math.random());
-      const featured = shuffled.slice(0, 3);
-      
-      featured.forEach(product => {
-        const item = document.createElement('div');
-        item.className = 'slider-item';
-        item.innerHTML = `
-          <img src="${product.img}" alt="${product.name}" style="height: 250px;">
-          <div>
-            <h3>${product.name.replace(/_/g, ' ')}</h3>
-            <p class="price">${product.desc.split(' - ')[1]}</p>
-            <button onclick="order('${product.name}')">اطلب الآن</button>
-          </div>
-        `;
-        featuredSlider.appendChild(item);
-      });
-      
-      let current = 0;
-      setInterval(() => {
-        current = (current + 1) % featured.length;
-        featuredSlider.style.transform = `translateX(-${current * 100}%)`;
-      }, 3000);
-    }
-
-    // زر العودة للأعلى
+      // تعديل دالة عرض العروض العشوائية
+  function showRandomFeatured() {
+    const shuffled = [...products].sort(() => 0.5 - Math.random());
+    const featured = shuffled.slice(0, 3);
+    
+    featuredSlider.innerHTML = ''; // تنظيف السلايدر أولاً
+    
+    featured.forEach(product => {
+      const item = document.createElement('div');
+      item.className = 'slider-item';
+      item.innerHTML = `
+        <div style="text-align: right; width: 50%;">
+          <h3>${product.name.replace(/_/g, ' ')}</h3>
+          <p>${product.desc.split(' - ')[0]}</p>
+          <p class="price">${product.desc.split(' - ')[1]}</p>
+          <button onclick="order('${product.name}')">اطلب الآن</button>
+        </div>
+        <img src="${product.img}" alt="${product.name}">
+      `;
+      featuredSlider.appendChild(item);
+    });
+    
+    let current = 0;
+    setInterval(() => {
+      current = (current + 1) % featured.length;
+      featuredSlider.style.transform = `translateX(${current * 100}%)`; // تعديل هنا
+    }, 3000);
+  }
+    
+// زر العودة للأعلى
     window.addEventListener('scroll', () => {
       if (window.scrollY > 300) {
         scrollToTop.style.display = 'flex';
