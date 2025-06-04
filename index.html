@@ -95,10 +95,10 @@
       font-size: 16px;
     }
     
-    /* Featured Slider Styles */
-    .featured-slider {
+    /* Simple Slider Styles */
+    .simple-slider {
       background: linear-gradient(135deg, #f8f0e0, #fff9f0);
-      padding: 2rem 1rem;
+      padding: 1rem;
       margin: 1rem auto;
       max-width: 1200px;
       border-radius: 12px;
@@ -109,34 +109,12 @@
     
     .slider-container {
       display: flex;
-      height: 350px;
       transition: transform 0.5s ease-in-out;
     }
     
     .slider-item {
       min-width: 100%;
-      display: flex;
-      align-items: center;
-      padding: 0 2rem;
-      gap: 2rem;
-    }
-    
-    .slider-content {
-      flex: 1;
-      text-align: right;
-    }
-    
-    .slider-image {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-    }
-    
-    .slider-image img {
-      max-height: 300px;
-      width: auto;
-      object-fit: contain;
-      border-radius: 8px;
+      padding: 1rem;
     }
     
     .slider-nav {
@@ -166,28 +144,6 @@
     
     .slider-nav button:hover {
       background: rgba(212, 175, 55, 0.9);
-    }
-    
-    .slider-dots {
-      position: absolute;
-      bottom: 15px;
-      left: 0;
-      right: 0;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-    }
-    
-    .slider-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #ddd;
-      cursor: pointer;
-    }
-    
-    .slider-dot.active {
-      background: #D4AF37;
     }
     
     /* Main Content Styles */
@@ -400,18 +356,6 @@
         padding: 0.5rem 1rem;
         font-size: 0.9rem;
       }
-      .slider-item {
-        flex-direction: column;
-        padding: 1rem;
-        height: auto;
-        gap: 1rem;
-      }
-      .slider-image img {
-        max-height: 200px;
-      }
-      .slider-content {
-        text-align: center;
-      }
     }
 
     @media (max-width: 480px) {
@@ -482,14 +426,13 @@
   </div>
 
   <div class="container">
-    <!-- Featured Slider -->
-    <div class="featured-slider">
+    <!-- Simple Slider -->
+    <div class="simple-slider">
       <div class="slider-container" id="featuredSlider"></div>
       <div class="slider-nav">
         <button id="prevSlide"><i class="fas fa-chevron-right"></i></button>
         <button id="nextSlide"><i class="fas fa-chevron-left"></i></button>
       </div>
-      <div class="slider-dots" id="sliderDots"></div>
     </div>
 
     <h2 id="main-title">عطورنا المختارة</h2>
@@ -527,7 +470,7 @@
   <script>
     // بيانات المنتجات
     const productsData = {
-      products: [
+          products: [
         { name: 'jean paul gaultier le male elixir', desc: 'عطر شبابي عصري بنفحات حارة - 100000 أوقية', img: 'jean_paul_gaultier_le_male_elixir.png', category: 'men', price: 100000 },
         { name: 'Dior sauvage', desc: 'أحد أشهر العطور الرجالية حول العالم - 100000 أوقية', img: 'Dior_sauvage_200ml.png', category: 'men', price: 100000 },
         { name: 'officer', desc: 'عطر رسمي أنيق يلائم جميع المناسبات - 15000 أوقية', img: 'officer.png', category: 'men', price: 15000 },
@@ -637,7 +580,7 @@
         'Sayaad Al Quloob': '🍁❄️🌙',
         'Box Musoof': '🍁❄️🌙',
       }
-    };
+    };   
     
     let products = productsData.products;
     let productSymbols = productsData.symbols;
@@ -653,7 +596,6 @@
     const priceFilter = document.getElementById('priceFilter');
     const searchContainer = document.getElementById('searchContainer');
     const featuredSlider = document.getElementById('featuredSlider');
-    const sliderDots = document.getElementById('sliderDots');
     const prevSlideBtn = document.getElementById('prevSlide');
     const nextSlideBtn = document.getElementById('nextSlide');
     const scrollToTop = document.getElementById('scrollToTop');
@@ -661,108 +603,186 @@
     // إعداد السنة الحالية في الفوتر
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
-    // Toggle search bar
-    searchToggle.addEventListener('click', function(e) {
-      e.stopPropagation();
-      searchContainer.classList.toggle('show');
-      if (searchContainer.classList.contains('show')) {
-        searchInput.focus();
+   // Toggle search bar
+searchToggle.addEventListener('click', function(e) {
+  e.stopPropagation();
+  searchContainer.classList.toggle('show');
+  if (searchContainer.classList.contains('show')) {
+    searchInput.focus();
+  }
+});
+
+// Toggle filter menu
+filterToggle.addEventListener('click', function(e) {
+  e.stopPropagation();
+  filterMenu.classList.toggle('show');
+  searchContainer.classList.remove('show');
+});
+
+// Close menus when clicking outside
+document.addEventListener('click', function() {
+  filterMenu.classList.remove('show');
+  searchContainer.classList.remove('show');
+});
+
+// منع إغلاق القوائم عند النقر عليها
+filterMenu.addEventListener('click', function(e) {
+  e.stopPropagation();
+});
+searchContainer.addEventListener('click', function(e) {
+  e.stopPropagation();
+});
+
+// Mobile category filter
+mobileCategoryFilter.addEventListener('change', function() {
+  filterProducts();
+});
+
+// Price filter
+priceFilter.addEventListener('change', function() {
+  filterProducts();
+});
+
+// البحث عند الكتابة مباشرة
+searchInput.addEventListener('input', debounce(function() {
+  filterProducts();
+}, 300));
+
+// دالة debounce لتقليل استدعاءات البحث
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// دالة لعرض المنتجات
+function displayProducts(filteredProducts = products) {
+  productGrid.innerHTML = '<div class="loading">جاري التحميل...</div>';
+  resultsSection.innerHTML = '';
+  remainingSection.innerHTML = '';
+  
+  setTimeout(() => {
+    productGrid.innerHTML = '';
+    const searchTerm = searchInput.value.toLowerCase();
+
+    let matchedProducts = filteredProducts;
+    let unmatchedProducts = products.filter(product => !matchedProducts.includes(product));
+
+    if (searchTerm) {
+      mainTitle.style.display = 'none';
+
+      if (matchedProducts.length > 0) {
+        resultsSection.innerHTML = '<h2 class="section-title">النتائج</h2>';
+        renderProducts(matchedProducts, productGrid);
+      } else {
+        resultsSection.innerHTML = '<p class="no-results">لا توجد منتجات مطابقة لبحثك</p>';
       }
-    });
 
-    // Toggle filter menu
-    filterToggle.addEventListener('click', function(e) {
-      e.stopPropagation();
-      filterMenu.classList.toggle('show');
-      searchContainer.classList.remove('show');
-    });
-
-    // Close menus when clicking outside
-    document.addEventListener('click', function() {
-      filterMenu.classList.remove('show');
-      searchContainer.classList.remove('show');
-    });
-
-    // منع إغلاق القوائم عند النقر عليها
-    filterMenu.addEventListener('click', function(e) {
-      e.stopPropagation();
-    });
-    searchContainer.addEventListener('click', function(e) {
-      e.stopPropagation();
-    });
-
-    // Mobile category filter
-    mobileCategoryFilter.addEventListener('change', function() {
-      filterProducts();
-    });
-
-    // Price filter
-    priceFilter.addEventListener('change', function() {
-      filterProducts();
-    });
-
-    // البحث عند الكتابة مباشرة
-    searchInput.addEventListener('input', debounce(function() {
-      filterProducts();
-    }, 300));
-
-    // دالة debounce لتقليل استدعاءات البحث
-    function debounce(func, wait) {
-      let timeout;
-      return function executedFunction(...args) {
-        const later = () => {
-          clearTimeout(timeout);
-          func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-      };
+      if (unmatchedProducts.length > 0) {
+        remainingSection.innerHTML = '<h2 class="section-title">عطورنا المختارة</h2>';
+        const remainingGrid = document.createElement('div');
+        remainingGrid.className = 'product-grid';
+        renderProducts(unmatchedProducts, remainingGrid);
+        remainingSection.appendChild(remainingGrid);
+      }
+    } else {
+      mainTitle.style.display = 'block';
+      renderProducts(filteredProducts, productGrid);
     }
+  }, 500);
+}
 
-    // دالة لعرض المنتجات
-    function displayProducts(filteredProducts = products) {
-      productGrid.innerHTML = '<div class="loading">جاري التحميل...</div>';
-      resultsSection.innerHTML = '';
-      remainingSection.innerHTML = '';
+// دالة مساعدة لعرض المنتجات
+function renderProducts(productsArray, container) {
+  productsArray.forEach((product, index) => {
+    const showSizeOptions = product.price > 11000;
+    const priceText = product.desc.split(' - ')[1];
+    
+    const html = `
+      <div class="product">
+        <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
+        <div class="symbols">${productSymbols[product.name] || ''}</div>
+        <h3>${product.name.replace(/_/g, ' ')}</h3>
+        <p>${product.desc.split(' - ')[0]}</p>
+        <p class="price">${priceText}</p>
+        <button class="order-btn" onclick="order('${encodeURIComponent(product.name)}', this, '${showSizeOptions ? 'كامل' : ''}', ${index})">
+          اطلب الآن
+        </button>
+        ${showSizeOptions ? `
+        <div class="size-options">
+          <button class="size-btn selected" onclick="selectSize(this, 'كامل', ${index})">كامل</button>
+          <button class="size-btn" onclick="selectSize(this, '10 مل', ${index})">10 مل</button>
+        </div>
+        ` : ''}
+      </div>
+    `;
+    container.insertAdjacentHTML('beforeend', html);
+  });
+}
+
+// دالة لتحديد الحجم
+function selectSize(button, size, index) {
+  const buttons = button.parentElement.querySelectorAll('.size-btn');
+  buttons.forEach(btn => btn.classList.remove('selected'));
+  button.classList.add('selected');
+  const orderButton = button.closest('.product').querySelector('.order-btn');
+  orderButton.setAttribute('onclick', `order('${encodeURIComponent(products[index].name)}', this, '${size}', ${index})`);
+}
+
+// دالة تصفية المنتجات
+function filterProducts() {
+  const searchTerm = searchInput.value.toLowerCase();
+  const category = mobileCategoryFilter.value;
+  const priceRange = priceFilter.value;
+  let filteredProducts = products;
+
+  if (searchTerm) {
+    filteredProducts = filteredProducts.filter(product =>
+      product.name.toLowerCase().includes(searchTerm) ||
+      product.desc.toLowerCase().includes(searchTerm)
+    );
+  }
+
+  if (category !== 'all') {
+    filteredProducts = filteredProducts.filter(product => product.category === category);
+  }
+
+  if (priceRange !== 'all') {
+    if (priceRange.endsWith('+')) {
+      const minPrice = parseInt(priceRange.replace('+', ''));
+      filteredProducts = filteredProducts.filter(product => product.price >= minPrice);
+    } else {
+      const [minPrice, maxPrice] = priceRange.split('-').map(Number);
+      filteredProducts = filteredProducts.filter(product => product.price >= minPrice && product.price <= maxPrice);
+    }
+  }
+
+  displayProducts(filteredProducts);
+}
+
+// دالة الطلب عبر واتساب
+function order(productName, button, size, index) {
+  const sizeText = size ? ` بحجم ${size}` : '';
+  window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}${sizeText}`;
+}
+
+    // دالة لعرض المنتجات في السلايدر
+    function displaySliderProducts() {
+      featuredSlider.innerHTML = '';
       
-      setTimeout(() => {
-        productGrid.innerHTML = '';
-        const searchTerm = searchInput.value.toLowerCase();
-
-        let matchedProducts = filteredProducts;
-        let unmatchedProducts = products.filter(product => !matchedProducts.includes(product));
-
-        if (searchTerm) {
-          mainTitle.style.display = 'none';
-
-          if (matchedProducts.length > 0) {
-            resultsSection.innerHTML = '<h2 class="section-title">النتائج</h2>';
-            renderProducts(matchedProducts, productGrid);
-          } else {
-            resultsSection.innerHTML = '<p class="no-results">لا توجد منتجات مطابقة لبحثك</p>';
-          }
-
-          if (unmatchedProducts.length > 0) {
-            remainingSection.innerHTML = '<h2 class="section-title">عطورنا المختارة</h2>';
-            const remainingGrid = document.createElement('div');
-            remainingGrid.className = 'product-grid';
-            renderProducts(unmatchedProducts, remainingGrid);
-            remainingSection.appendChild(remainingGrid);
-          }
-        } else {
-          mainTitle.style.display = 'block';
-          renderProducts(filteredProducts, productGrid);
-        }
-      }, 500);
-    }
-
-    // دالة مساعدة لعرض المنتجات
-    function renderProducts(productsArray, container) {
-      productsArray.forEach((product, index) => {
+      products.forEach((product, index) => {
         const showSizeOptions = product.price > 11000;
         const priceText = product.desc.split(' - ')[1];
         
-        const html = `
+        const slide = document.createElement('div');
+        slide.className = 'slider-item';
+        slide.innerHTML = `
           <div class="product">
             <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
             <div class="symbols">${productSymbols[product.name] || ''}</div>
@@ -780,197 +800,51 @@
             ` : ''}
           </div>
         `;
-        container.insertAdjacentHTML('beforeend', html);
+        featuredSlider.appendChild(slide);
       });
     }
 
-    // دالة لتحديد الحجم
-    function selectSize(button, size, index) {
-      const buttons = button.parentElement.querySelectorAll('.size-btn');
-      buttons.forEach(btn => btn.classList.remove('selected'));
-      button.classList.add('selected');
-      const orderButton = button.closest('.product').querySelector('.order-btn');
-      orderButton.setAttribute('onclick', `order('${encodeURIComponent(products[index].name)}', this, '${size}', ${index})`);
-    }
-
-    // دالة تصفية المنتجات
-    function filterProducts() {
-      const searchTerm = searchInput.value.toLowerCase();
-      const category = mobileCategoryFilter.value;
-      const priceRange = priceFilter.value;
-      let filteredProducts = products;
-
-      if (searchTerm) {
-        filteredProducts = filteredProducts.filter(product =>
-          product.name.toLowerCase().includes(searchTerm) ||
-          product.desc.toLowerCase().includes(searchTerm)
-        );
-      }
-
-      if (category !== 'all') {
-        filteredProducts = filteredProducts.filter(product => product.category === category);
-      }
-
-      if (priceRange !== 'all') {
-        if (priceRange.endsWith('+')) {
-          const minPrice = parseInt(priceRange.replace('+', ''));
-          filteredProducts = filteredProducts.filter(product => product.price >= minPrice);
-        } else {
-          const [minPrice, maxPrice] = priceRange.split('-').map(Number);
-          filteredProducts = filteredProducts.filter(product => product.price >= minPrice && product.price <= maxPrice);
-        }
-      }
-
-      displayProducts(filteredProducts);
-    }
-
-    // دالة الطلب عبر واتساب
-    function order(productName, button, size, index) {
-      const sizeText = size ? ` بحجم ${size}` : '';
-      window.location.href = `https://wa.me/22246099296?text=مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}${sizeText}`;
-    }
-
-    // دالة عرض العروض العشوائية (محدثة)
+    // متغيرات السلايدر
     let currentSlide = 0;
     let slideInterval;
-    let featuredGroups = [];
-    
-    function initSlider() {
-      // إنشاء مجموعات من 3 عطور بشكل عشوائي
-      const shuffled = [...products].sort(() => 0.5 - Math.random());
-      featuredGroups = [];
-      
-      // تقسيم العطور إلى مجموعات كل مجموعة تحتوي على 3 عطور
-      for (let i = 0; i < shuffled.length; i += 3) {
-        const group = shuffled.slice(i, i + 3);
-        if (group.length === 3) {
-          featuredGroups.push(group);
-        }
-      }
-      
-      // إذا لم يكن هناك مجموعات كاملة (عدد العطور ليس مضاعف لـ 3)
-      if (featuredGroups.length === 0 && shuffled.length > 0) {
-        featuredGroups.push(shuffled);
-      }
-      
-      // تنظيف السلايدر أولاً
-      featuredSlider.innerHTML = '';
-      sliderDots.innerHTML = '';
-      
-      // إنشاء الشرائح لكل مجموعة
-      featuredGroups.forEach((group, groupIndex) => {
-        const slide = document.createElement('div');
-        slide.className = 'slider-item';
-        
-        let productsHTML = '';
-        group.forEach(product => {
-          productsHTML += `
-            <div class="slider-product">
-              <div class="slider-product-image">
-                <img src="${product.img}" alt="${product.name}" loading="lazy">
-              </div>
-              <div class="slider-product-content">
-                <h3>${product.name.replace(/_/g, ' ')}</h3>
-                <p>${product.desc.split(' - ')[0]}</p>
-                <p class="price">${product.desc.split(' - ')[1]}</p>
-                <button class="order-btn" onclick="order('${product.name}')">اطلب الآن</button>
-              </div>
-            </div>
-          `;
-        });
-        
-        slide.innerHTML = `
-          <div class="slider-group">
-            ${productsHTML}
-          </div>
-        `;
-        
-        featuredSlider.appendChild(slide);
-        
-        // إضافة النقاط
-        const dot = document.createElement('div');
-        dot.className = 'slider-dot';
-        dot.dataset.index = groupIndex;
-        sliderDots.appendChild(dot);
-      });
-      
-      // تحديث النقاط النشطة
-      updateDots();
-      
-      // بدء الحركة التلقائية
-      startSlider();
+
+    // دالة لتحريك السلايدر
+    function goToSlide(index) {
+      currentSlide = (index + products.length) % products.length;
+      featuredSlider.style.transform = `translateX(-${currentSlide * 100}%)`;
     }
-    
+
+    // دالة للشريحة التالية
+    function nextSlide() {
+      goToSlide(currentSlide + 1);
+    }
+
+    // دالة للشريحة السابقة
+    function prevSlide() {
+      goToSlide(currentSlide - 1);
+    }
+
+    // بدء السلايدر التلقائي
     function startSlider() {
       clearInterval(slideInterval);
-      slideInterval = setInterval(() => {
-        nextSlide();
-      }, 5000); // تغيير الشريحة كل 5 ثواني
+      slideInterval = setInterval(nextSlide, 3000);
     }
-    
-    function nextSlide() {
-      if (featuredGroups.length === 0) return;
-      
-      currentSlide = (currentSlide + 1) % featuredGroups.length;
-      featuredSlider.style.transform = `translateX(-${currentSlide * 100}%)`;
-      updateDots();
-    }
-    
-    function prevSlide() {
-      if (featuredGroups.length === 0) return;
-      
-      currentSlide = (currentSlide - 1 + featuredGroups.length) % featuredGroups.length;
-      featuredSlider.style.transform = `translateX(-${currentSlide * 100}%)`;
-      updateDots();
-    }
-    
-    function updateDots() {
-      const dots = document.querySelectorAll('.slider-dot');
-      dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentSlide);
-      });
-    }
-    
+
     // أحداث الأزرار
     nextSlideBtn.addEventListener('click', () => {
       nextSlide();
-      startSlider(); // إعادة التشغيل بعد النقر
-    });
-    
-    prevSlideBtn.addEventListener('click', () => {
-      prevSlide();
-      startSlider(); // إعادة التشغيل بعد النقر
-    });
-    
-    // أحداث النقاط
-    sliderDots.addEventListener('click', (e) => {
-      if (e.target.classList.contains('slider-dot')) {
-        currentSlide = parseInt(e.target.dataset.index);
-        featuredSlider.style.transform = `translateX(-${currentSlide * 100}%)`;
-        updateDots();
-        startSlider(); // إعادة التشغيل بعد النقر
-      }
-    });
-    
-    // زر العودة للأعلى
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) {
-        scrollToTop.style.display = 'flex';
-      } else {
-        scrollToTop.style.display = 'none';
-      }
+      startSlider();
     });
 
-    scrollToTop.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+    prevSlideBtn.addEventListener('click', () => {
+      prevSlide();
+      startSlider();
     });
 
     // عرض المنتجات عند تحميل الصفحة
     displayProducts();
-    initSlider();
+    displaySliderProducts();
+    startSlider();
   </script>
 </body>
 </html>
