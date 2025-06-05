@@ -498,8 +498,7 @@
   </footer>
 
   <script>
-    // بيانات المنتجات (ستضيفها أنت)
-    const productsData = {
+  const productsData = {
       products: [
         { name: 'jean paul gaultier le male elixir', desc: 'عطر شبابي عصري بنفحات حارة - 100000 أوقية', img: 'jean_paul_gaultier_le_male_elixir.png', category: 'men', price: 100000, available: true },
         { name: 'Dior sauvage', desc: 'أحد أشهر العطور الرجالية حول العالم - 100000 أوقية', img: 'Dior_sauvage_200ml.png', category: 'men', price: 100000, available: true },
@@ -557,7 +556,7 @@
         { name: 'In The Stars Body Lotion', desc: 'لوشن معطر برائحة النجوم مع مزيج من الفواكه والمسك الدافئ - 12000 أوقية', img: 'In_The_Stars_Body_Lotion.png', category: 'unisex', price: 12000, available: true },
         { name: 'Into the Night perfume', desc: 'عطر نسائي غامض بنفحات التوت الأسود والفانيليا - 12000 أوقية', img: 'Into_the_Night_perfume.png', category: 'women', price: 12000, available: true },
         { name: 'INTO THE NIGHT Body Lotion', desc: 'لوشن برائحة العطر الشهير Into the Night - 12000 أوقية', img: 'INTO_THE_NIGHT_Body_Lotion.png', category: 'women', price: 12000, available: false },
-        { name: 'You\'re The One', desc: 'عطر زهري فاخر بمزيج من الورد والفراولة - 12000 أوقية', img: 'Youre_The_0ne.png', category: 'women', price: 12000, available: true },
+        { name: 'You\'re The One', desc: 'عطر زهري فاخر بمزيج من الورد والفراولة - 12000 أوقية', img: 'Youre_The_One.png', category: 'women', price: 12000, available: true },
         { name: 'Gingham', desc: 'عطر نقي ومنعش برائحة الزهور البيضاء والليمون - 12000 أوقية', img: 'Gingham.png', category: 'unisex', price: 12000, available: true },
         { name: 'In the Stars', desc: 'عطر يجمع بين رائحة الكشمير والتمر الهندي - 12000 أوقية', img: 'In_the_Stars.png', category: 'unisex', price: 12000, available: true },
         { name: 'Sense Laverne', desc: 'عطر رجالي قوي بنفحات الفلفل الأسود والعود - 25000 أوقية', img: 'Sense_Laverne.png', category: 'men', price: 25000, available: false }
@@ -625,7 +624,7 @@
         'In the Stars': '❄️🌙',
         'Sense Laverne': '🍁❄️'
      
-    }
+      }
     };   
     
     let products = productsData.products;
@@ -779,13 +778,13 @@
               <button class="size-btn ${isAvailable ? '' : 'unavailable'}" 
                 data-size="full" 
                 data-index="${index}"
-                onclick="handleSizeSelection(this, ${isAvailable})">
+                onclick="handleSizeSelection(this, ${isAvailable}, ${hasPartialAvailability})">
                 كامل
               </button>
-              <button class="size-btn ${hasPartialAvailability ? 'selected' : ''}" 
+              <button class="size-btn ${hasPartialAvailability ? '' : 'hidden'}" 
                 data-size="10ml" 
                 data-index="${index}"
-                onclick="handleSizeSelection(this, true)">
+                onclick="handleSizeSelection(this, ${isAvailable}, ${hasPartialAvailability})">
                 10 مل
               </button>
             </div>
@@ -793,48 +792,59 @@
           </div>
         `;
         container.insertAdjacentHTML('beforeend', html);
+        
+        // تحديد الخيار الافتراضي
+        if (showSizeOptions) {
+          const productElement = container.lastElementChild;
+          const sizeOptions = productElement.querySelector('.size-options');
+          if (hasPartialAvailability) {
+            sizeOptions.querySelector('[data-size="10ml"]').classList.add('selected');
+          } else if (isAvailable) {
+            sizeOptions.querySelector('[data-size="full"]').classList.add('selected');
+          }
+        }
       });
     }
 
     // دالة للتعامل مع اختيار الحجم
-    function handleSizeSelection(clickedButton, isAvailable) {
+    function handleSizeSelection(clickedButton, isAvailable, hasPartialAvailability) {
       const parent = clickedButton.closest('.size-options');
       const buttons = parent.querySelectorAll('.size-btn');
       const index = clickedButton.dataset.index;
+      const selectedSize = clickedButton.dataset.size;
       
       // إعادة تعيين جميع الأزرار
-    buttons.forEach(btn => {
-        btn.classList.remove('selected', 'unavailable');
-        if (btn.dataset.size === 'full' && !products[index].available) {
+      buttons.forEach(btn => {
+        btn.classList.remove('selected');
+        if (btn.dataset.size === 'full' && !isAvailable) {
           btn.classList.add('unavailable');
+        } else {
+          btn.classList.remove('unavailable');
         }
       });
       
       // تحديد الزر المختار
       clickedButton.classList.add('selected');
-      
-      // إذا كان الزر المختار هو 10ml، نزيل حالة unavailable من زر الكامل
-      if (clickedButton.dataset.size === '10ml') {
-        parent.querySelector('[data-size="full"]').classList.remove('unavailable');
-      }
     }
 
     // دالة الطلب
     function orderProduct(productName, index, isAvailable, hasPartialAvailability) {
       const productElement = document.querySelectorAll('.product')[index];
-      const selectedSize = productElement.querySelector('.size-btn.selected')?.textContent.trim();
+      const selectedSize = productElement.querySelector('.size-btn.selected')?.dataset.size;
       
       let sizeText = '';
       let message = '';
       
-      if (selectedSize) {
-        sizeText = ` بحجم ${selectedSize}`;
-        
-        if (selectedSize === 'كامل' && !isAvailable) {
+      if (selectedSize === 'full') {
+        sizeText = ' بحجم كامل';
+        if (!isAvailable) {
           message = `مرحبًا، أرغب بالحجز المسبق لعطر ${decodeURIComponent(productName)}${sizeText}`;
         } else {
           message = `مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}${sizeText}`;
         }
+      } else if (selectedSize === '10ml') {
+        sizeText = ' بحجم 10 مل';
+        message = `مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}${sizeText}`;
       } else {
         message = `مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}`;
       }
@@ -917,19 +927,29 @@
             <button class="size-btn ${isAvailable ? '' : 'unavailable'}" 
               data-size="full" 
               data-index="${currentSlideIndex}"
-              onclick="handleSizeSelection(this, ${isAvailable})">
+              onclick="handleSizeSelection(this, ${isAvailable}, ${hasPartialAvailability})">
               كامل
             </button>
-            <button class="size-btn ${hasPartialAvailability ? 'selected' : ''}" 
+            <button class="size-btn ${hasPartialAvailability ? '' : 'hidden'}" 
               data-size="10ml" 
               data-index="${currentSlideIndex}"
-              onclick="handleSizeSelection(this, true)">
+              onclick="handleSizeSelection(this, ${isAvailable}, ${hasPartialAvailability})">
               10 مل
             </button>
           </div>
           ` : ''}
         </div>
       `;
+      
+      // تحديد الخيار الافتراضي للسلايدر
+      if (showSizeOptions) {
+        const sizeOptions = slide.querySelector('.size-options');
+        if (hasPartialAvailability) {
+          sizeOptions.querySelector('[data-size="10ml"]').classList.add('selected');
+        } else if (isAvailable) {
+          sizeOptions.querySelector('[data-size="full"]').classList.add('selected');
+        }
+      }
     }
 
     // دالة للانتقال إلى شريحة معينة
