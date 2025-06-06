@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Cairo', sans-serif;
       background: linear-gradient(135deg, #f5e4c3, #fff5e6);
@@ -416,7 +416,7 @@
   </style>
 </head>
 <body>
-  <!-- Header -->
+    <!-- Header -->
   <div class="header">
     <div class="header-icons">
       <div class="filter-icon" id="filterToggle">
@@ -498,7 +498,8 @@
   </footer>
 
   <script>
-  const productsData = {
+    
+     const productsData = {
       products: [
         { name: 'jean paul gaultier le male elixir', desc: 'عطر شبابي عصري بنفحات حارة - 100000 أوقية', img: 'jean_paul_gaultier_le_male_elixir.png', category: 'men', price: 100000, available: true },
         { name: 'Dior sauvage', desc: 'أحد أشهر العطور الرجالية حول العالم - 100000 أوقية', img: 'Dior_sauvage_200ml.png', category: 'men', price: 100000, available: true },
@@ -763,28 +764,26 @@
         const availabilityText = isAvailable ? 'متوفر' : hasPartialAvailability ? 'متوفر (10 مل فقط)' : 'غير متوفر';
         
         const html = `
-          <div class="product">
+          <div class="product" data-index="${index}">
             <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
             <div class="symbols">${productSymbols[product.name] || ''}</div>
             <h3>${product.name.replace(/_/g, ' ')}</h3>
             <div class="availability ${availabilityClass}">${availabilityText}</div>
             <p>${product.desc.split(' - ')[0]}</p>
             <p class="price">${priceText}</p>
-            <button class="order-btn" onclick="orderProduct('${encodeURIComponent(product.name)}', ${index}, ${isAvailable}, ${hasPartialAvailability})">
+            <button class="order-btn" onclick="orderProduct(${index})">
               اطلب الآن
             </button>
             ${showSizeOptions ? `
             <div class="size-options">
               <button class="size-btn ${isAvailable ? '' : 'unavailable'}" 
                 data-size="full" 
-                data-index="${index}"
-                onclick="handleSizeSelection(this, ${isAvailable}, ${hasPartialAvailability})">
+                onclick="selectSize(this, ${index})">
                 كامل
               </button>
               <button class="size-btn ${hasPartialAvailability ? '' : 'hidden'}" 
                 data-size="10ml" 
-                data-index="${index}"
-                onclick="handleSizeSelection(this, ${isAvailable}, ${hasPartialAvailability})">
+                onclick="selectSize(this, ${index})">
                 10 مل
               </button>
             </div>
@@ -793,30 +792,31 @@
         `;
         container.insertAdjacentHTML('beforeend', html);
         
-        // تحديد الخيار الافتراضي
+        // تحديد الحجم الافتراضي
         if (showSizeOptions) {
           const productElement = container.lastElementChild;
           const sizeOptions = productElement.querySelector('.size-options');
+          
           if (hasPartialAvailability) {
             sizeOptions.querySelector('[data-size="10ml"]').classList.add('selected');
+            products[index].selectedSize = '10ml';
           } else if (isAvailable) {
             sizeOptions.querySelector('[data-size="full"]').classList.add('selected');
+            products[index].selectedSize = 'full';
           }
         }
       });
     }
 
-    // دالة للتعامل مع اختيار الحجم
-    function handleSizeSelection(clickedButton, isAvailable, hasPartialAvailability) {
-      const parent = clickedButton.closest('.size-options');
-      const buttons = parent.querySelectorAll('.size-btn');
-      const index = clickedButton.dataset.index;
-      const selectedSize = clickedButton.dataset.size;
+    // دالة لتحديد الحجم
+    function selectSize(button, index) {
+      const productElement = button.closest('.product');
+      const buttons = productElement.querySelectorAll('.size-btn');
       
-      // إعادة تعيين جميع الأزرار
+      // إزالة التحديد من جميع الأزرار
       buttons.forEach(btn => {
         btn.classList.remove('selected');
-        if (btn.dataset.size === 'full' && !isAvailable) {
+        if (btn.dataset.size === 'full' && !products[index].available) {
           btn.classList.add('unavailable');
         } else {
           btn.classList.remove('unavailable');
@@ -824,31 +824,35 @@
       });
       
       // تحديد الزر المختار
-      clickedButton.classList.add('selected');
+      button.classList.add('selected');
+      
+      // حفظ الاختيار في كائن المنتج
+      products[index].selectedSize = button.dataset.size;
     }
 
-    // دالة الطلب
-    function orderProduct(productName, index, isAvailable, hasPartialAvailability) {
-      const productElement = document.querySelectorAll('.product')[index];
-      const selectedSize = productElement.querySelector('.size-btn.selected')?.dataset.size;
-      
+    // دالة الطلب عبر واتساب
+    function orderProduct(index) {
+      const product = products[index];
       let sizeText = '';
       let message = '';
       
-      if (selectedSize === 'full') {
+      // تحديد الرسالة بناءً على الحجم المختار
+      if (product.selectedSize === 'full') {
         sizeText = ' بحجم كامل';
-        if (!isAvailable) {
-          message = `مرحبًا، أرغب بالحجز المسبق لعطر ${decodeURIComponent(productName)}${sizeText}`;
+        if (!product.available) {
+          message = `مرحبًا، أرغب بالحجز المسبق لعطر ${product.name.replace(/_/g, ' ')}${sizeText}`;
         } else {
-          message = `مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}${sizeText}`;
+          message = `مرحبًا، أرغب بطلب عطر ${product.name.replace(/_/g, ' ')}${sizeText}`;
         }
-      } else if (selectedSize === '10ml') {
+      } else if (product.selectedSize === '10ml') {
         sizeText = ' بحجم 10 مل';
-        message = `مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}${sizeText}`;
+        message = `مرحبًا، أرغب بطلب عطر ${product.name.replace(/_/g, ' ')}${sizeText}`;
       } else {
-        message = `مرحبًا، أرغب بطلب عطر ${decodeURIComponent(productName)}`;
+        // إذا لم يتم اختيار حجم (للعطور التي لا تحتوي خيارات حجم)
+        message = `مرحبًا، أرغب بطلب عطر ${product.name.replace(/_/g, ' ')}`;
       }
       
+      // إرسال رسالة الواتساب
       window.location.href = `https://wa.me/22246099296?text=${encodeURIComponent(message)}`;
     }
 
@@ -912,28 +916,26 @@
       const availabilityText = isAvailable ? 'متوفر' : hasPartialAvailability ? 'متوفر (10 مل فقط)' : 'غير متوفر';
       
       slide.innerHTML = `
-        <div class="product">
+        <div class="product" data-index="${currentSlideIndex}">
           <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
           <div class="symbols">${productSymbols[product.name] || ''}</div>
           <h3>${product.name.replace(/_/g, ' ')}</h3>
           <div class="availability ${availabilityClass}">${availabilityText}</div>
           <p>${product.desc.split(' - ')[0]}</p>
           <p class="price">${priceText}</p>
-          <button class="order-btn" onclick="orderProduct('${encodeURIComponent(product.name)}', ${currentSlideIndex}, ${isAvailable}, ${hasPartialAvailability})">
+          <button class="order-btn" onclick="orderProduct(${currentSlideIndex})">
             اطلب الآن
           </button>
           ${showSizeOptions ? `
           <div class="size-options">
             <button class="size-btn ${isAvailable ? '' : 'unavailable'}" 
               data-size="full" 
-              data-index="${currentSlideIndex}"
-              onclick="handleSizeSelection(this, ${isAvailable}, ${hasPartialAvailability})">
+              onclick="selectSize(this, ${currentSlideIndex})">
               كامل
             </button>
             <button class="size-btn ${hasPartialAvailability ? '' : 'hidden'}" 
               data-size="10ml" 
-              data-index="${currentSlideIndex}"
-              onclick="handleSizeSelection(this, ${isAvailable}, ${hasPartialAvailability})">
+              onclick="selectSize(this, ${currentSlideIndex})">
               10 مل
             </button>
           </div>
@@ -941,13 +943,15 @@
         </div>
       `;
       
-      // تحديد الخيار الافتراضي للسلايدر
+      // تحديد الحجم الافتراضي للسلايدر
       if (showSizeOptions) {
         const sizeOptions = slide.querySelector('.size-options');
         if (hasPartialAvailability) {
           sizeOptions.querySelector('[data-size="10ml"]').classList.add('selected');
+          products[currentSlideIndex].selectedSize = '10ml';
         } else if (isAvailable) {
           sizeOptions.querySelector('[data-size="full"]').classList.add('selected');
+          products[currentSlideIndex].selectedSize = 'full';
         }
       }
     }
