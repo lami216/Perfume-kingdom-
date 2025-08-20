@@ -17,6 +17,7 @@
     body {
       font-family: 'Cairo', sans-serif;
       background-color: #f8fafc;
+      overflow-x: hidden;
     }
     .container { max-width: 100%; }
     .product {
@@ -42,6 +43,7 @@
       font-size: 1.2rem;
       margin-bottom: 0.5rem;
       color: #1e293b;
+      overflow-wrap: anywhere;
     }
     .product .availability {
       font-size: 0.9rem;
@@ -52,6 +54,9 @@
     }
     .availability.no {
       color: #ef4444;
+    }
+    .product p {
+      overflow-wrap: anywhere;
     }
     .product .price {
       font-weight: bold;
@@ -89,7 +94,7 @@
       </a>
     </div>
   </header>  <section id="bannerSection" class="py-8 text-center">
-    <h2 id="bannerHeading" class="text-4xl font-bold mb-4">أرقى أنواع العطور بين يديك</h2>
+    <h2 id="bannerHeading" class="text-3xl md:text-4xl font-bold mb-4">أرقى أنواع العطور بين يديك</h2>
     <p id="bannerSub" class="text-lg">عطور أصلية – أسعار مميزة – توصيل فوري</p>
   </section>  <section class="py-8 bg-white">
     <div class="container mx-auto px-4">
