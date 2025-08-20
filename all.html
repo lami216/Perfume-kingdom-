@@ -82,13 +82,12 @@
 </head>
 <body class="text-gray-800">  <header class="text-white shadow-lg sticky top-0 z-50">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-2">
+      <a href="index.html" class="flex items-center space-x-2">
         <i class="fas fa-spray-can text-white text-2xl"></i>
         <h1 class="text-xl font-bold">مملكة العطور</h1>
-      </div>
-      <a href="index.html" class="font-bold hover:underline">الرئيسية</a>
+      </a>
     </div>
-  </header>  <section id="bannerSection" class="py-16 text-center">
+  </header>  <section id="bannerSection" class="py-8 text-center">
     <h2 id="bannerHeading" class="text-4xl font-bold mb-4">أرقى أنواع العطور بين يديك</h2>
     <p id="bannerSub" class="text-lg">عطور أصلية – أسعار مميزة – توصيل فوري</p>
   </section>  <section class="py-8 bg-white">
@@ -122,10 +121,7 @@
     const searchInput = document.getElementById("searchInput");
     const searchForm = document.getElementById("searchForm");
     const priceFilter = document.getElementById("priceFilter");
-    const params = new URLSearchParams(window.location.search);
-    const initialCategory = params.get('category') || 'all';
-    const initialSearch = params.get('search') || '';
-    searchInput.value = initialSearch;
+    const initialCategory = 'all';
     const headingMap = { men: 'العطور الرجالية', women: 'العطور النسائية', unisex: 'العطور المختلطة', all: 'جميع العطور' };
     document.getElementById('category-heading').textContent = headingMap[initialCategory] || 'جميع العطور';
 
