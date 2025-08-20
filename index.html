@@ -18,7 +18,10 @@
         <i class="fas fa-spray-can text-white text-2xl"></i>
         <h1 class="text-xl font-bold">مملكة العطور</h1>
       </div>
-      <a href="https://wa.me/22246099296" class="bg-green-500 px-4 py-2 rounded-lg font-bold text-white hover:bg-green-600 transition">اطلب عبر واتساب</a>
+      <form id="searchForm" class="flex bg-white rounded-lg overflow-hidden">
+        <input id="searchField" type="text" placeholder="ابحث..." class="px-3 py-2 text-gray-700 outline-none">
+        <button type="submit" class="px-3 py-2 bg-yellow-500 text-white"><i class="fas fa-search"></i></button>
+      </form>
     </div>
   </header>
 
@@ -30,20 +33,20 @@
   <section class="py-12">
     <div class="container mx-auto px-4">
       <h3 class="text-3xl font-bold mb-8 text-center text-yellow-700">الفئات الرئيسية</h3>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-        <a href="products.html?category=men" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center">
+      <div class="flex flex-col gap-8 items-center">
+        <a href="products.html?category=men" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center border-4 border-blue-300 w-full max-w-xs">
           <i class="fas fa-mars text-5xl text-blue-500 mb-4"></i>
           <span class="text-xl font-bold">عطور رجالية</span>
         </a>
-        <a href="products.html?category=women" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center">
+        <a href="products.html?category=women" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center border-4 border-pink-300 w-full max-w-xs">
           <i class="fas fa-venus text-5xl text-pink-500 mb-4"></i>
           <span class="text-xl font-bold">عطور نسائية</span>
         </a>
-        <a href="products.html?category=unisex" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center">
+        <a href="products.html?category=unisex" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center border-4 border-purple-300 w-full max-w-xs">
           <i class="fas fa-venus-mars text-5xl text-purple-500 mb-4"></i>
           <span class="text-xl font-bold">عطور مختلطة</span>
         </a>
-        <a href="products.html?category=all" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center">
+        <a href="products.html?category=all" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center border-4 border-yellow-300 w-full max-w-xs">
           <i class="fas fa-th-large text-5xl text-yellow-500 mb-4"></i>
           <span class="text-xl font-bold">جميع العطور</span>
         </a>
@@ -69,6 +72,13 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const query = document.getElementById('searchField').value.trim();
+      if (query) {
+        window.location.href = `products.html?search=${encodeURIComponent(query)}`;
+      }
+    });
   </script>
 </body>
 </html>

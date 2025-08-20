@@ -88,9 +88,10 @@
       </div>
       <div class="flex items-center gap-4">
         <a href="index.html" class="font-bold hover:underline">الرئيسية</a>
-        <a href="https://wa.me/22246099296" class="bg-green-500 px-4 py-2 rounded-lg font-bold text-white hover:bg-green-600 transition">
-        اطلب عبر واتساب
-        </a>
+        <form id="headerSearchForm" class="flex bg-white rounded-lg overflow-hidden">
+          <input id="headerSearchField" type="text" placeholder="ابحث..." class="px-3 py-2 text-gray-700 outline-none">
+          <button type="submit" class="px-3 py-2 bg-yellow-500 text-white"><i class="fas fa-search"></i></button>
+        </form>
       </div>
     </div>
   </header>  <section class="bg-gradient-to-r from-yellow-100 to-white py-16 text-center">
@@ -262,7 +263,9 @@
     const priceFilter = document.getElementById("priceFilter");
     const params = new URLSearchParams(window.location.search);
     const initialCategory = params.get('category') || 'all';
+    const initialSearch = params.get('search') || '';
     categoryFilter.value = initialCategory;
+    searchInput.value = initialSearch;
     const headingMap = { men: 'العطور الرجالية', women: 'العطور النسائية', unisex: 'العطور المختلطة', all: 'جميع العطور' };
     document.getElementById('category-heading').textContent = headingMap[initialCategory] || 'جميع العطور';
 
@@ -320,6 +323,14 @@
     searchInput.addEventListener("input", displayProducts);
     categoryFilter.addEventListener("change", displayProducts);
     priceFilter.addEventListener("change", displayProducts);
+    document.getElementById('headerSearchForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const q = document.getElementById('headerSearchField').value.trim();
+      if (q) {
+        searchInput.value = q;
+        displayProducts();
+      }
+    });
 
     window.addEventListener("scroll", () => {
       const scrollBtn = document.getElementById("scrollToTop");
