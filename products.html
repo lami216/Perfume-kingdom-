@@ -80,35 +80,26 @@
     }
   </style>
 </head>
-<body class="text-gray-800">  <header class="bg-gradient-to-r from-yellow-500 to-yellow-300 text-white shadow-lg sticky top-0 z-50">
+<body class="text-gray-800">  <header class="text-white shadow-lg sticky top-0 z-50">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex items-center space-x-2">
         <i class="fas fa-spray-can text-white text-2xl"></i>
         <h1 class="text-xl font-bold">مملكة العطور</h1>
       </div>
-      <div class="flex items-center gap-4">
-        <a href="index.html" class="font-bold hover:underline">الرئيسية</a>
-        <form id="headerSearchForm" class="flex bg-white rounded-lg overflow-hidden">
-          <input id="headerSearchField" type="text" placeholder="ابحث..." class="px-3 py-2 text-gray-700 outline-none">
-          <button type="submit" class="px-3 py-2 bg-yellow-500 text-white"><i class="fas fa-search"></i></button>
-        </form>
-      </div>
+      <a href="index.html" class="font-bold hover:underline">الرئيسية</a>
     </div>
-  </header>  <section class="bg-gradient-to-r from-yellow-100 to-white py-16 text-center">
-    <h2 class="text-4xl font-bold mb-4 text-yellow-700">أرقى أنواع العطور بين يديك</h2>
-    <p class="text-lg text-gray-700">عطور أصلية – أسعار مميزة – توصيل فوري</p>
+  </header>  <section id="bannerSection" class="py-16 text-center">
+    <h2 id="bannerHeading" class="text-4xl font-bold mb-4">أرقى أنواع العطور بين يديك</h2>
+    <p id="bannerSub" class="text-lg">عطور أصلية – أسعار مميزة – توصيل فوري</p>
   </section>  <section class="py-8 bg-white">
     <div class="container mx-auto px-4">
       <h2 id="category-heading" class="text-2xl font-bold mb-6 text-center"></h2>
       <div class="flex flex-col md:flex-row gap-4 justify-between mb-6">
-        <input type="text" id="searchInput" placeholder="ابحث عن عطر..." class="w-full md:w-1/3 px-4 py-2 rounded border border-gray-300">
-        <select id="categoryFilter" class="w-full md:w-1/4 px-4 py-2 rounded border border-gray-300">
-          <option value="all">جميع الأنواع</option>
-          <option value="men">رجالي</option>
-          <option value="women">نسائي</option>
-          <option value="unisex">مختلط</option>
-        </select>
-        <select id="priceFilter" class="w-full md:w-1/4 px-4 py-2 rounded border border-gray-300">
+        <form id="searchForm" class="flex bg-white rounded-lg overflow-hidden flex-1">
+          <input type="text" id="searchInput" placeholder="ابحث عن عطر..." class="px-4 py-2 flex-1 outline-none">
+          <button type="submit" class="px-4 py-2 text-white"> <i class="fas fa-search"></i> </button>
+        </form>
+        <select id="priceFilter" class="w-full md:w-1/3 px-4 py-2 rounded border border-gray-300">
           <option value="all">جميع الأسعار</option>
           <option value="0-20000">أقل من 20000</option>
           <option value="20000-50000">20000 - 50000</option>
@@ -124,31 +115,51 @@
     <p>&copy; <span id="year"></span> مملكة العطور - جميع الحقوق محفوظة</p>
   </footer>  <a href="#" id="scrollToTop" class="fixed bottom-5 left-5 bg-yellow-400 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-yellow-500 transition z-50">
     <i class="fas fa-arrow-up"></i>
-  </a>  <script src="products-data.js"></script>
-  <script>  
-
+  </a>  
+  <script src="products-data.js"></script>
+  <script>
     const productGrid = document.getElementById("product-grid");
     const searchInput = document.getElementById("searchInput");
-    const categoryFilter = document.getElementById("categoryFilter");
+    const searchForm = document.getElementById("searchForm");
     const priceFilter = document.getElementById("priceFilter");
     const params = new URLSearchParams(window.location.search);
     const initialCategory = params.get('category') || 'all';
     const initialSearch = params.get('search') || '';
-    categoryFilter.value = initialCategory;
     searchInput.value = initialSearch;
     const headingMap = { men: 'العطور الرجالية', women: 'العطور النسائية', unisex: 'العطور المختلطة', all: 'جميع العطور' };
     document.getElementById('category-heading').textContent = headingMap[initialCategory] || 'جميع العطور';
 
+    const bannerMap = {
+      men: {heading:'أرقى العطور الرجالية بين يديك', sub:'مجموعة مختارة من أفضل العطور الرجالية بأسعار مميزة وتوصيل فوري'},
+      women: {heading:'أرقى العطور النسائية بين يديك', sub:'مجموعة مختارة من أفضل العطور النسائية بأسعار مميزة وتوصيل فوري'},
+      unisex: {heading:'أرقى العطور المختلطة بين يديك', sub:'مجموعة مناسبة للجنسين بأسعار مميزة وتوصيل فوري'},
+      all: {heading:'أرقى أنواع العطور بين يديك', sub:'عطور أصلية – أسعار مميزة – توصيل فوري'}
+    };
+    const themeMap = {
+      men: {headerFrom:'#3b82f6', headerTo:'#93c5fd', heroFrom:'#dbeafe', text:'#1e3a8a', button:'#3b82f6'},
+      women: {headerFrom:'#ec4899', headerTo:'#f9a8d4', heroFrom:'#fce7f3', text:'#9d174d', button:'#ec4899'},
+      unisex: {headerFrom:'#8b5cf6', headerTo:'#d8b4fe', heroFrom:'#ede9fe', text:'#5b21b6', button:'#8b5cf6'},
+      all: {headerFrom:'#f59e0b', headerTo:'#fcd34d', heroFrom:'#fef3c7', text:'#b45309', button:'#f59e0b'}
+    };
+    const banner = bannerMap[initialCategory] || bannerMap.all;
+    document.getElementById('bannerHeading').textContent = banner.heading;
+    document.getElementById('bannerSub').textContent = banner.sub;
+    const theme = themeMap[initialCategory] || themeMap.all;
+    document.querySelector('header').style.background = `linear-gradient(to right, ${theme.headerFrom}, ${theme.headerTo})`;
+    document.getElementById('bannerSection').style.background = `linear-gradient(to right, ${theme.heroFrom}, white)`;
+    document.getElementById('bannerHeading').style.color = theme.text;
+    document.getElementById('category-heading').style.color = theme.text;
+    document.querySelector('#searchForm button').style.backgroundColor = theme.button;
+
     function displayProducts() {
       const search = searchInput.value.toLowerCase();
-      const category = categoryFilter.value;
       const price = priceFilter.value;
 
       productGrid.innerHTML = "";
 
       let filtered = productsData.products.filter(p => {
         const matchesSearch = p.name.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search);
-        const matchesCategory = category === 'all' || p.category === category;
+        const matchesCategory = initialCategory === 'all' || p.category === initialCategory;
         let matchesPrice = true;
         if (price === '0-20000') matchesPrice = p.price < 20000;
         else if (price === '20000-50000') matchesPrice = p.price >= 20000 && p.price <= 50000;
@@ -190,17 +201,12 @@
 
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    searchInput.addEventListener("input", displayProducts);
-    categoryFilter.addEventListener("change", displayProducts);
-    priceFilter.addEventListener("change", displayProducts);
-    document.getElementById('headerSearchForm').addEventListener('submit', function(e) {
+    searchForm.addEventListener("submit", function(e){
       e.preventDefault();
-      const q = document.getElementById('headerSearchField').value.trim();
-      if (q) {
-        searchInput.value = q;
-        displayProducts();
-      }
+      displayProducts();
     });
+    searchInput.addEventListener("input", displayProducts);
+    priceFilter.addEventListener("change", displayProducts);
 
     window.addEventListener("scroll", () => {
       const scrollBtn = document.getElementById("scrollToTop");
@@ -208,5 +214,6 @@
     });
 
     displayProducts();
-  </script></body>
+  </script>
+</body>
 </html>
