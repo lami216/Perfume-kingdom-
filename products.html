@@ -28,6 +28,7 @@
       flex-direction: column;
       justify-content: space-between;
       height: 100%;
+      position: relative;
     }
     .product img {
       max-width: 100%;
@@ -104,7 +105,7 @@
           <option value="all">جميع الأنواع</option>
           <option value="men">رجالي</option>
           <option value="women">نسائي</option>
-          <option value="unisex">مشترك</option>
+          <option value="unisex">مختلط</option>
         </select>
         <select id="priceFilter" class="w-full md:w-1/4 px-4 py-2 rounded border border-gray-300">
           <option value="all">جميع الأسعار</option>
@@ -126,13 +127,13 @@
     const productsData = {
       products: [
            { name: 'jean paul gaultier le male elixir', desc: 'عطر شبابي عصري بنفحات حارة - 100000 أوقية', img: 'image/jean_paul_gaultier_le_male_elixir.png', category: 'men', price: 100000, available: true },
-        { name: 'Dior sauvage', desc: 'أحد أشهر العطور الرجالية حول العالم - 100000 أوقية', img: 'image/Dior_sauvage_200ml.png', category: 'men', price: 100000, available: true },
+        { name: 'Dior sauvage', desc: 'أحد أشهر العطور الرجالية حول العالم - 100000 أوقية', img: 'image/Dior_sauvage_200ml.png', category: 'men', price: 100000, available: true, badge: 'الأكثر مبيعاً' },
         { name: 'officer', desc: 'عطر رسمي أنيق يلائم جميع المناسبات - 15000 أوقية', img: 'image/officer.png', category: 'men', price: 15000, available: true },
-        { name: 'jean_paul_gaultier_paradise', desc: 'عطر شبابي فاخر بنفحات برية منعشة - 76200 أوقية', img: 'image/jean_paul_gaultier_paradise.png', category: 'men', price: 76200, available: true },
+        { name: 'jean_paul_gaultier_paradise', desc: 'عطر شبابي فاخر بنفحات برية منعشة - 76200 أوقية', img: 'image/jean_paul_gaultier_paradise.png', category: 'men', price: 76200, available: true, badge: 'جديد' },
         { name: 'tom_ford_noir', desc: 'عطر رجالي غامض بنفحات خشبية دافئة - 72000 أوقية', img: 'image/tom_ford_noir.png', category: 'men', price: 72000, available: false },
         { name: '212_VIP_black', desc: 'عطر شبابي جريء بنكهات عصرية - 61000 أوقية', img: 'image/212_VIP_black.png', category: 'men', price: 61000, available: true },
         { name: 'Acqua_di_Gio_Armani', desc: 'عطر رجالي منعش مستوحى من البحر - 61000 أوقية', img: 'image/Acqua_di_Gio_Armani.png', category: 'men', price: 61000, available: true },
-        { name: 'La_Nuit_Trésor', desc: 'عطر نسائي رومانسي بنفحات الفانيليا - 58000 أوقية', img: 'image/La_Nuit_Tresor.png', category: 'women', price: 58000, available: true },
+        { name: 'La_Nuit_Trésor', desc: 'عطر نسائي رومانسي بنفحات الفانيليا - 58000 أوقية', img: 'image/La_Nuit_Tresor.png', category: 'women', price: 58000, available: true, badge: 'الأكثر مبيعاً' },
         { name: 'MY_WAY', desc: 'عطر نسائي أنيق بنكهات زهرية مشرقة - 58000 أوقية', img: 'image/MY_WAY.png', category: 'women', price: 58000, available: true },
         { name: 'Dolce_and_Gabbana_the_one', desc: 'عطر نسائي فاخر بنفحات شرقية دافئة - 57000 أوقية', img: 'image/Dolce_and_Gabbana_the_one.png', category: 'women', price: 57000, available: false },
         { name: 'You_Intensely', desc: 'عطر نسائي قوي بنكهات فاكهية جذابة - 54000 أوقية', img: 'image/You_Intensely.png', category: 'women', price: 54000, available: true },
@@ -156,7 +157,7 @@
         { name: 'Confidential', desc: 'عطر أنيق بنفحات غامضة وفاخرة - 15000 أوقية', img: 'image/Confidential.png', category: 'unisex', price: 15000, available: true },
         { name: 'Supremacy Incense', desc: 'عطر رجالي فاخر - 15000 أوقية', img: 'image/Supremacy Incense.png', category: 'men', price: 15000, available: true },
         { name: 'Mandarin Sky', desc: 'عطر رجالي منعش - 15000 أوقية', img: 'image/Mandarin Sky.png', category: 'men', price: 15000, available: true },
-        { name: 'Khamrah', desc: 'خمرة عطر مختلط برائحة القرفة والفانيليا - 13000 أوقية', img: 'image/Khamrah.png', category: 'unisex', price: 13000, available: true },
+        { name: 'Khamrah', desc: 'خمرة عطر مختلط برائحة القرفة والفانيليا - 13000 أوقية', img: 'image/Khamrah.png', category: 'unisex', price: 13000, available: true, badge: 'عرض خاص' },
         { name: 'Khamrah Qahwa', desc: 'خمرة قهوة عطر مختلط بنفحات القهوة والتوابل - 13000 أوقية', img: 'image/Khamrah Qahwa.png', category: 'unisex', price: 13000, available: true },
         { name: 'Ra\'ed', desc: 'الرائد عطر رجالي شرقي - 12000 أوقية', img: 'image/Raed.png', category: 'men', price: 12000, available: true },
         { name: 'Fakhar Lattafa Black', desc: 'فخر الطافة عطر رجالي فاخر - 12000 أوقية', img: 'image/Fakhar Lattafa Black.png', category: 'men', price: 12000, available: true },
@@ -262,7 +263,7 @@
     const params = new URLSearchParams(window.location.search);
     const initialCategory = params.get('category') || 'all';
     categoryFilter.value = initialCategory;
-    const headingMap = { men: 'العطور الرجالية', women: 'العطور النسائية', unisex: 'العطور المشتركة', all: 'جميع العطور' };
+    const headingMap = { men: 'العطور الرجالية', women: 'العطور النسائية', unisex: 'العطور المختلطة', all: 'جميع العطور' };
     document.getElementById('category-heading').textContent = headingMap[initialCategory] || 'جميع العطور';
 
     function displayProducts() {
@@ -292,9 +293,11 @@
         const priceText = product.desc.split(" - ")[1] || product.price + " أوقية";
         const descText = product.desc.split(" - ")[0];
         const symbols = productsData.symbols[product.name] || "";
+        const badgeHTML = product.badge ? `<span class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">${product.badge}</span>` : "";
 
         productDiv.className = "product";
         productDiv.innerHTML = `
+          ${badgeHTML}
           <div class="symbol">${symbols}</div>
           <img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/250?text=عطر'">
           <h3>${product.name}</h3>
