@@ -49,15 +49,14 @@
 <body class="text-gray-800">
   <header class="bg-gradient-to-r from-yellow-500 to-yellow-300 text-white shadow-lg">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-2">
+      <a href="index.html" class="flex items-center space-x-2">
         <i class="fas fa-spray-can text-white text-2xl"></i>
         <h1 class="text-xl font-bold">مملكة العطور</h1>
-      </div>
-      <button id="openSearch" class="text-2xl"><i class="fas fa-search"></i></button>
+      </a>
     </div>
   </header>
 
-  <div id="searchControls" class="container mx-auto px-4 py-4 hidden">
+  <div id="searchControls" class="container mx-auto px-4 py-4">
     <div class="flex flex-col md:flex-row gap-4">
       <form id="searchForm" class="flex bg-white rounded-lg overflow-hidden flex-1">
         <input id="searchField" type="text" placeholder="ابحث..." class="px-3 py-2 text-gray-700 outline-none flex-1">
@@ -86,19 +85,19 @@
     <div class="container mx-auto px-4">
       <h3 class="text-3xl font-bold mb-8 text-center text-yellow-700">الفئات الرئيسية</h3>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-        <a href="products.html?category=men" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center border-4 border-blue-300 w-full">
+        <a href="men.html" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center border-4 border-blue-300 w-full">
           <i class="fas fa-mars text-5xl text-blue-500 mb-4"></i>
           <span class="text-xl font-bold">عطور رجالية</span>
         </a>
-        <a href="products.html?category=women" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center border-4 border-pink-300 w-full">
+        <a href="women.html" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center border-4 border-pink-300 w-full">
           <i class="fas fa-venus text-5xl text-pink-500 mb-4"></i>
           <span class="text-xl font-bold">عطور نسائية</span>
         </a>
-        <a href="products.html?category=unisex" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center border-4 border-purple-300 w-full">
+        <a href="unisex.html" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center border-4 border-purple-300 w-full">
           <i class="fas fa-venus-mars text-5xl text-purple-500 mb-4"></i>
           <span class="text-xl font-bold">عطور مختلطة</span>
         </a>
-        <a href="products.html?category=all" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center border-4 border-yellow-300 w-full">
+        <a href="all.html" class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center border-4 border-yellow-300 w-full">
           <i class="fas fa-th-large text-5xl text-yellow-500 mb-4"></i>
           <span class="text-xl font-bold">جميع العطور</span>
         </a>
@@ -126,7 +125,6 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    const openSearch = document.getElementById('openSearch');
     const searchControls = document.getElementById('searchControls');
     const searchField = document.getElementById('searchField');
     const priceFilter = document.getElementById('priceFilter');
@@ -162,15 +160,17 @@
         div.innerHTML = `${badgeHTML}<div class="symbol">${symbols}</div><img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/150?text=عطر'"><h3>${product.name}</h3><div class="availability ${availabilityClass}">${availabilityText}</div><p class="price">${priceText}</p><button class="order-btn" onclick="orderProduct('${product.name}')">اطلب الآن</button>`;
         searchResults.appendChild(div);
       });
-    }
 
-    openSearch.addEventListener('click', () => {
-      searchControls.classList.remove('hidden');
-      hero.classList.add('hidden');
-      categoriesSection.classList.add('hidden');
-      resultsSection.classList.remove('hidden');
-      renderResults();
-    });
+      if (query) {
+        hero.classList.add('hidden');
+        categoriesSection.classList.add('hidden');
+        resultsSection.classList.remove('hidden');
+      } else {
+        hero.classList.remove('hidden');
+        categoriesSection.classList.remove('hidden');
+        resultsSection.classList.add('hidden');
+      }
+    }
 
     searchField.addEventListener('input', renderResults);
     priceFilter.addEventListener('change', renderResults);
@@ -178,6 +178,8 @@
       e.preventDefault();
       renderResults();
     });
+
+    renderResults();
 
     function orderProduct(name) {
       const message = `مرحبًا، أرغب بطلب عطر ${name}`;
