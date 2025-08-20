@@ -53,12 +53,25 @@
         <i class="fas fa-spray-can text-white text-2xl"></i>
         <h1 class="text-xl font-bold">مملكة العطور</h1>
       </div>
-      <form id="searchForm" class="flex bg-white rounded-lg overflow-hidden">
-        <input id="searchField" type="text" placeholder="ابحث..." class="px-3 py-2 text-gray-700 outline-none">
-        <button type="submit" class="px-3 py-2 bg-yellow-500 text-white"><i class="fas fa-search"></i></button>
-      </form>
+      <button id="openSearch" class="text-2xl"><i class="fas fa-search"></i></button>
     </div>
   </header>
+
+  <div id="searchControls" class="container mx-auto px-4 py-4 hidden">
+    <div class="flex flex-col md:flex-row gap-4">
+      <form id="searchForm" class="flex bg-white rounded-lg overflow-hidden flex-1">
+        <input id="searchField" type="text" placeholder="ابحث..." class="px-3 py-2 text-gray-700 outline-none flex-1">
+        <button type="submit" class="px-3 py-2 bg-yellow-500 text-white"><i class="fas fa-search"></i></button>
+      </form>
+      <select id="priceFilter" class="w-full md:w-1/3 px-4 py-2 rounded border border-gray-300">
+        <option value="all">جميع الأسعار</option>
+        <option value="0-20000">أقل من 20000</option>
+        <option value="20000-50000">20000 - 50000</option>
+        <option value="50000-100000">50000 - 100000</option>
+        <option value="100000+">أكثر من 100000</option>
+      </select>
+    </div>
+  </div>
 
   <section id="heroSection" class="bg-gradient-to-r from-yellow-100 to-white py-20 text-center">
     <h2 class="text-4xl font-bold mb-4 text-yellow-700">أهلاً بكم في مملكة العطور</h2>
@@ -69,7 +82,7 @@
     <div id="searchResults" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
   </div>
 
-  <section class="py-12">
+  <section id="categoriesSection" class="py-12">
     <div class="container mx-auto px-4">
       <h3 class="text-3xl font-bold mb-8 text-center text-yellow-700">الفئات الرئيسية</h3>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -113,40 +126,54 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    const openSearch = document.getElementById('openSearch');
+    const searchControls = document.getElementById('searchControls');
     const searchField = document.getElementById('searchField');
+    const priceFilter = document.getElementById('priceFilter');
     const hero = document.getElementById('heroSection');
+    const categoriesSection = document.getElementById('categoriesSection');
     const resultsSection = document.getElementById('resultsSection');
     const searchResults = document.getElementById('searchResults');
 
     function renderResults() {
       const query = searchField.value.trim().toLowerCase();
-      if (query) {
-        hero.classList.add('hidden');
-        resultsSection.classList.remove('hidden');
-        const filtered = productsData.products.filter(p =>
-          p.name.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query)
-        );
-        searchResults.innerHTML = '';
-        filtered.forEach(product => {
-          const div = document.createElement('div');
-          const isAvailable = product.available;
-          const availabilityText = isAvailable ? 'متوفر' : 'غير متوفر';
-          const availabilityClass = isAvailable ? 'yes' : 'no';
-          const priceText = product.desc.split(' - ')[1] || product.price + ' أوقية';
-          const symbols = productsData.symbols[product.name] || '';
-          const badgeHTML = product.badge ? `<span class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">${product.badge}</span>` : '';
-          div.className = 'product';
-          div.innerHTML = `${badgeHTML}<div class="symbol">${symbols}</div><img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/150?text=عطر'"><h3>${product.name}</h3><div class="availability ${availabilityClass}">${availabilityText}</div><p class="price">${priceText}</p><button class="order-btn" onclick="orderProduct('${product.name}')">اطلب الآن</button>`;
-          searchResults.appendChild(div);
-        });
-      } else {
-        hero.classList.remove('hidden');
-        resultsSection.classList.add('hidden');
-        searchResults.innerHTML = '';
-      }
+      const price = priceFilter.value;
+
+      const filtered = productsData.products.filter(p => {
+        const matchesQuery = !query || p.name.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query);
+        let matchesPrice = true;
+        if (price === '0-20000') matchesPrice = p.price < 20000;
+        else if (price === '20000-50000') matchesPrice = p.price >= 20000 && p.price <= 50000;
+        else if (price === '50000-100000') matchesPrice = p.price > 50000 && p.price <= 100000;
+        else if (price === '100000+') matchesPrice = p.price > 100000;
+        return matchesQuery && matchesPrice;
+      });
+
+      searchResults.innerHTML = '';
+      filtered.forEach(product => {
+        const div = document.createElement('div');
+        const isAvailable = product.available;
+        const availabilityText = isAvailable ? 'متوفر' : 'غير متوفر';
+        const availabilityClass = isAvailable ? 'yes' : 'no';
+        const priceText = product.desc.split(' - ')[1] || product.price + ' أوقية';
+        const symbols = productsData.symbols[product.name] || '';
+        const badgeHTML = product.badge ? `<span class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">${product.badge}</span>` : '';
+        div.className = 'product';
+        div.innerHTML = `${badgeHTML}<div class="symbol">${symbols}</div><img src="${product.img}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/150?text=عطر'"><h3>${product.name}</h3><div class="availability ${availabilityClass}">${availabilityText}</div><p class="price">${priceText}</p><button class="order-btn" onclick="orderProduct('${product.name}')">اطلب الآن</button>`;
+        searchResults.appendChild(div);
+      });
     }
 
+    openSearch.addEventListener('click', () => {
+      searchControls.classList.remove('hidden');
+      hero.classList.add('hidden');
+      categoriesSection.classList.add('hidden');
+      resultsSection.classList.remove('hidden');
+      renderResults();
+    });
+
     searchField.addEventListener('input', renderResults);
+    priceFilter.addEventListener('change', renderResults);
     document.getElementById('searchForm').addEventListener('submit', function(e) {
       e.preventDefault();
       renderResults();
