@@ -59,19 +59,10 @@
   </header>
 
   <div id="searchControls" class="container mx-auto px-4 py-4">
-    <div class="flex flex-col md:flex-row gap-4">
-      <form id="searchForm" class="flex bg-white rounded-lg overflow-hidden flex-1">
-        <input id="searchField" type="text" placeholder="ابحث..." class="px-3 py-2 text-gray-700 outline-none flex-1">
-        <button type="submit" class="px-3 py-2 bg-yellow-500 text-white"><i class="fas fa-search"></i></button>
-      </form>
-      <select id="priceFilter" class="w-full md:w-1/3 px-4 py-2 rounded border border-gray-300">
-        <option value="all">جميع الأسعار</option>
-        <option value="0-20000">أقل من 20000</option>
-        <option value="20000-50000">20000 - 50000</option>
-        <option value="50000-100000">50000 - 100000</option>
-        <option value="100000+">أكثر من 100000</option>
-      </select>
-    </div>
+    <form id="searchForm" class="flex bg-white rounded-lg overflow-hidden">
+      <input id="searchField" type="text" placeholder="ابحث..." class="px-3 py-2 text-gray-700 outline-none flex-1">
+      <button type="submit" class="px-3 py-2 bg-yellow-500 text-white"><i class="fas fa-search"></i></button>
+    </form>
   </div>
 
   <section id="heroSection" class="bg-gradient-to-r from-yellow-100 to-white py-20 text-center">
@@ -137,7 +128,7 @@
 
     function renderResults() {
       const query = searchField.value.trim().toLowerCase();
-      const price = priceFilter.value;
+      const price = priceFilter ? priceFilter.value : 'all';
 
       const filtered = productsData.products.filter(p => {
         const matchesQuery = !query || p.name.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query);
@@ -175,7 +166,9 @@
     }
 
     searchField.addEventListener('input', renderResults);
-    priceFilter.addEventListener('change', renderResults);
+    if (priceFilter) {
+      priceFilter.addEventListener('change', renderResults);
+    }
     document.getElementById('searchForm').addEventListener('submit', function(e) {
       e.preventDefault();
       renderResults();
