@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-    body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; }
+    body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; overflow-x: hidden; }
     .container { max-width: 100%; }
     .product {
       background: white;
@@ -28,7 +28,7 @@
       border-radius: 8px;
       margin-bottom: 0.5rem;
     }
-    .product h3 { font-size: 1rem; margin-bottom: 0.25rem; color: #1e293b; }
+    .product h3 { font-size: 1rem; margin-bottom: 0.25rem; color: #1e293b; overflow-wrap: anywhere; }
     .product .availability { font-size: 0.9rem; margin-bottom: 0.25rem; }
     .availability.yes { color: #22c55e; }
     .availability.no { color: #ef4444; }
@@ -45,6 +45,7 @@
     }
     .product button.order-btn:hover { background-color: #eab308; }
     .symbol { font-size: 1.2rem; margin-bottom: 0.25rem; }
+    .product p { overflow-wrap: anywhere; }
   </style>
 </head>
 <body class="text-gray-800">
